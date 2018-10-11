@@ -3,7 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
             <div class="col-md-12 white-box">
                 <div class="card">
                     <h3 class="box-title m-b-0">Room Category</h3>
@@ -33,6 +40,7 @@
                                     <tr>
                                         <th>#</th><th>Name</th><th>Description</th><th>Added By</th>
                                         <th>Date Added</th>
+                                        <th>Date Updated</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -40,8 +48,13 @@
                                 @foreach($roomtypes as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->description }}</td><td>{{ $item->user->roles[0]->label }}</td>
+                                        <td>{{ $item->name }}</td><td>{{ $item->description }}</td>
+                                        <td><label class="label label-success">
+                                            {{ $item->user->roles[0]->label }}
+                                        </label></td>
+
                                         <td>{{ $item->created_at->diffForHumans()}}</td>
+                                        <td>{{ $item->updated_at->diffForHumans()}}</td>
                                         <td>
                                             <a href="{{ url('/admin/roomtypes/' . $item->id) }}" title="View Roomtype"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/roomtypes/' . $item->id . '/edit') }}" title="Edit Roomtype"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

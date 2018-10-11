@@ -3,6 +3,14 @@
 @section('content')
 <div class="container">
 <div class="row">
+    @if (Session::has('flash_message'))
+
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
                     <div class="col-md-12 white-box">
                             <h3 class="box-title m-b-0">Roles </h3>
                             <a href="{{ url('/admin/roles/create') }}" class="btn btn-success btn-sm" title="Add New Role">

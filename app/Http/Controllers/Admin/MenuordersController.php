@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\GuestTransactionHistory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Menu;
@@ -73,7 +74,7 @@ class MenuordersController extends Controller
         //$requestData = $request->all();
        // Menuorder::create($requestData);
         $menus = $request->menus;
-        $quantity = $request->quantities;
+        $quantity = $request->quantity;
         $x = 0;
         foreach ($menus as $menu_id) {
             $menuorder = new Menuorder;
@@ -82,6 +83,16 @@ class MenuordersController extends Controller
             $menuorder->quantity = $quantity[$x];
             $menuorder->added_by = Auth::user()->id;
             $menuorder->save();
+
+        //End update for previous record
+        $guest_transaction = new GuestTransactionHistory;
+        $guest_transaction->user_id = $request->user_id;
+        $guest_transaction->type = 'food&drink';
+        $guest_transaction->description = "Guest ordered for {$menuorder->menu->name}; quantity ({$menuorder->quantity})";
+        $guest_transaction->price = $menuorder->menu->price * $menuorder->quantity;
+        $guest_transaction->status = "debit";
+        $guest_transaction->save();
+        //End Guest Transction table
             $x++;
         }
         return redirect('admin/menuorders')->with('flash_message', 'Order was successfully placed!');
@@ -113,8 +124,9 @@ class MenuordersController extends Controller
     {
         $this->authorize('update-menuorder');
         $menuorder = Menuorder::findOrFail($id);
-
-        return view('admin.menuorders.edit', compact('menuorder'));
+        $menus = Menu::select('id', 'name', 'price')->get();
+        $guests = Role::where('name', 'guest')->get();
+        return view('admin.menuorders.edit', compact('menus','menuorder', 'guests'));
     }
 
 
@@ -130,7 +142,6 @@ class MenuordersController extends Controller
     {
         $this->authorize('update-menuorder');
         $requestData = $request->all();
-
         $menuorder = Menuorder::findOrFail($id);
         $menuorder->update($requestData);
 
@@ -142,7 +153,10 @@ class MenuordersController extends Controller
         $this->authorize('update-userorder');
         Menuorder::where('user_id', $id)
         ->update(['paid' => 1]);
-        return redirect('admin/checkout')->with('flash_message', 'Your order was successfully paid');
+        GuestTransactionHistory::where('user_id', $id)
+        ->update(['status' => 'credit']);
+        return redirect('admin/checkout');
+        //->with('flash_message', 'Payment was completed successfully');
     }
 
     /**

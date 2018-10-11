@@ -4,7 +4,14 @@
 
 <div class="col-sm-12">
 <div class="white-box">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
 @if (Auth::user()->hasRole('receptionist'))
 <h2>Guest Management</h2><hr />
 <div class="text-center">

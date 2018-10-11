@@ -3,7 +3,6 @@
 @section('content')
     <div class="container">
         <div class="row">
-
             <div class="col-md-12 white-box">
                 <div class="card">
 <h2 class="m-b-0">Edit Menu #{{ $menu->id }}</h2><hr >
@@ -20,7 +19,7 @@
                             </ul>
                         @endif
 
-                        {!! Form::model($menu, [
+                        {!! Form::model($menu,[
                             'method' => 'PATCH',
                             'url' => ['/admin/menus', $menu->id],
                             'class' => 'form-horizontal',

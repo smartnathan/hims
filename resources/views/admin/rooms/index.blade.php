@@ -3,7 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
             <div class="col-md-12 white-box">
                 <div class="card">
                     <h3 class="box-title m-b-0">Rooms</h3>
@@ -32,6 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th><th>Name</th><th>Room Category</th><th>Description</th>
+                                        <th>Price</th>
                                         <th>Date added</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,6 +49,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->name }}</td><td>{{ $item->roomtype->name }}</td><td>{{ $item->description }}</td>
+                                    </td><td>₦{{ $item->price }}</td>
                                         <td>{{ $item->created_at->diffForHumans()}}</td>
                                         <td>
                                             <a href="{{ url('/admin/rooms/' . $item->id) }}" title="View Room"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

@@ -13,7 +13,7 @@
                                 @if (isset($bookings_today))
                                 {{ count($bookings_today) }}
                                 @endif
-                                        <span class="pull-right"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span></h3>
+                                        <span class="pull-right"><i class="mdi mdi-account-star"></i></span></h3>
                                     <p class="info-text font-12">Bookings Today</p>
                                     {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                                 </div>
@@ -28,7 +28,7 @@
                             @if (isset($rooms))
                             {{ count($rooms) }}
                             @endif
-                                        <span class="pull-right"><i class="mdi mdi-comment-text-outline"></i></span></h3>
+                                        <span class="pull-right"><i class="mdi mdi-home"></i></span></h3>
                                     <p class="info-text font-12">Available Rooms</p>
                                     {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                                 </div>
@@ -43,8 +43,8 @@
                                 @if (isset($menuorders))
                             {{ count($menuorders) }}
                             @endif
-                                     <span class="pull-right"><i class="mdi mdi-coin"></i></span></h3>
-                                    <p class="info-text font-12">Total Orders Today</p>
+                                     <span class="pull-right"><i class="mdi mdi-food"></i></span></h3>
+                                    <p class="info-text font-12">Total Food&Drinks Order Today</p>
                                     {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                                 </div>
                             </div>
@@ -54,9 +54,9 @@
                         <div class="white-box">
                             <div class="media bg-warning">
                                 <div class="media-body">
-                                    <h3 class="info-count">₦ 36462876<span class="pull-right"><i class="mdi mdi-coin"></i></span></h3>
-                                    <p class="info-text font-12">Total Profit</p>
-                                    {{-- <p class="info-ot font-15">Month<span class="label label-rounded">{{ date('F') }}</span></p> --}}
+                                    <h3 class="info-count">₦{{ $total_income}}.00<span class="pull-right"><i class="mdi mdi-cash"></i></span></h3>
+                                    <p class="info-text font-12">Income Today</p>
+
                                 </div>
                             </div>
                         </div>
@@ -78,10 +78,14 @@
                     <div class="col-sm-12">
                         <div class="white-box user-table">
                             <div class="row">
+
                 @if (Session::has('booked_message'))
-                    <div class="lead text-success text-center">
-                        {{ Session::get('booked_message') }}
-                    </div>
+
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('booked_message') }}", 'success');
+                                </script>
+                    @endsection
                 @endif
                                 <div class="col-sm-6">
                                     <h4 class="box-title">Recently Checked-In Guest Log</h4>

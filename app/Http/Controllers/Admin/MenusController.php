@@ -94,8 +94,10 @@ class MenusController extends Controller
     public function edit($id)
     {
         $menu = Menu::findOrFail($id);
-
-        return view('admin.menus.edit', compact('menu'));
+        $menutype_id = Menutype::select('id', 'name')->get();
+        $menutype_id = $menutype_id->pluck('name', 'id');
+        $menutype_id->prepend('--Select--', '');
+        return view('admin.menus.edit', compact('menu', 'menutype_id'));
     }
 
     /**

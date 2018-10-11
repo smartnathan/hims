@@ -10,7 +10,7 @@
 <div class="form-group {{ $errors->has('roomtype_id') ? 'has-error' : ''}}">
     {!! Form::label('roomtype_id', 'Room Category', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('roomtype_id', $roomtypes, isset($roomtypes) ? $roomtypes : '', ['class' => 'form-control', 'required' => 'required']) !!}
+        {!! Form::select('roomtype_id', $roomtypes, isset($room) ? $room->roomtype_id : '', ['class' => 'form-control', 'required' => 'required']) !!}
         {!! $errors->first('roomtype_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('description') ? 'has-error' : ''}}">

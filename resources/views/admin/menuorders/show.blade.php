@@ -60,7 +60,7 @@
                                     'type' => 'submit',
                                     'class' => 'btn btn-success btn-sm',
                                     'title' => 'Task Completed',
-                                    'onclick'=>'return confirm("Are you sure the task has been completed?")'
+
                             ))!!}
                         {!! Form::close() !!}
                                                 @endif
@@ -78,3 +78,4 @@
         </div>
     </div>
 @endsection
+

@@ -141,7 +141,7 @@
                 @if(isset($user->bookings[0]) && $user->bookings[0]->departure_date == null)
                <div class="page-header">
                    <h2 class="head">Room Transfer </h2>
-                   <p class="text-danger"><strong>Note:</strong> Room transfer can only be made within 24hours of checking-in.</p>
+                   <p class="text-danger"><strong>Note:</strong> Room transfer can only be done within 24hours of checking-in.</p>
                </div>
                <div>
 {!! Form::open(['url' => '/admin/bookings/'.$user->bookings[0]->id, 'class' => 'form-inline', 'files' => true, 'method' => 'PATCH', 'role' => 'form']) !!}

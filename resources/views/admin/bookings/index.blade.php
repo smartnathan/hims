@@ -7,11 +7,11 @@
                     <div class="card-body">
                 @if (Session::has('booked_message'))
 
-                <div class="alert alert-success">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                {{ Session::get('booked_message') }}
-                </div>
-
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('booked_message') }}", 'success');
+                                </script>
+                    @endsection
                 @endif
 
                 @if (Session::has('transfer_message') && Session::has('match'))

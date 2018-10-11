@@ -3,7 +3,14 @@
 @section('content')
 <div class="container">
 <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
 <div class="col-md-12 white-box">
 <h2 class="m-b-0">Menu Category</h2><hr />
     <a href="{{ url('/admin/menutypes/create') }}" class="btn btn-success btn-sm" title="Add New Menutype">
@@ -33,6 +40,7 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Added By</th>
+                    <th>Date Added</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -45,6 +53,7 @@
                     <td><span class="label label-success">
                         {{ $item->user->roles[0]->label }}
                     </span></td>
+                    <td>{{date('F d, Y h:i:s a', strtotime($item->created_at))}}</td>
                     <td>
                         <a href="{{ url('/admin/menutypes/' . $item->id) }}" title="View Menutype"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                         <a href="{{ url('/admin/menutypes/' . $item->id . '/edit') }}" title="Edit Menutype"><button type="button" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

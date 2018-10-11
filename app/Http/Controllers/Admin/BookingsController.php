@@ -281,10 +281,10 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
     {
         $this->authorize('view-booking');
         $total = 0;
-        $bookings = Booking::where('user_id', $id)->first();
-        $menuorders = Menuorder::where('user_id', $id)
-            ->where('paid', 0)->get();
-            return view('admin.bookings.invoice', compact('menuorders', 'bookings', 'total'));
+        $user = User::find($id);
+        $transactions = GuestTransactionHistory::where('user_id', $id)
+        ->where('status', 'debit')->get();
+            return view('admin.bookings.invoice', compact('transactions', 'total', 'user'));
     }
 
     public function checkoutCreate(Request $request)
@@ -306,7 +306,8 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
     public function checkout($id)
     {
         $this->authorize('create-booking');
-        $booking = Booking::where('user_id', $id)->first();
+        $booking = Booking::where('user_id', $id)
+        ->where('departure_date', NULL)->latest()->first();
         $room_id = $booking['room_id'];
         $room = Room::findOrFail($room_id);
         $room['is_booked'] = 0;
@@ -314,7 +315,8 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
         $booking['departure_date'] = date('Y-m-d H:i:s', time());
         $booking['checked_out_by'] = Auth::user()->id;
         $booking->save();
-return redirect('admin/bookings')->with('booked_message', 'Guest has been successfully checked out');
+return redirect('admin/checkout');
+//->with('flash_message', 'Guest has been successfully checked out');
     }
 
 

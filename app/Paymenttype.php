@@ -29,5 +29,8 @@ class Paymenttype extends Model
      */
     protected $fillable = ['name', 'description', 'added_by'];
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'added_by');
+    }
 }

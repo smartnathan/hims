@@ -3,7 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
 
             <div class="col-md-12 white-box">
                 <div class="card">

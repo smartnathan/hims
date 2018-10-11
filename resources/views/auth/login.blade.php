@@ -22,7 +22,7 @@
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 <!-- ===== Color CSS ===== -->
 <link href="{{ asset('css/colors/red.css') }}" id="theme" rel="stylesheet">
-
+<link href="{{ asset('plugins/components/bootstrap-sweetalert/dist/sweetalert.css') }}" rel="stylesheet">
 </head>
 
 <body class="mini-sidebar fix-header">
@@ -41,7 +41,6 @@
         </nav>
 
 
-
     <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
@@ -56,13 +55,13 @@
                                 @endif
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input placeholder="Email Address" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                            <input autocomplete="" placeholder="Email Address" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input placeholder="Password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            <input autocomplete="" placeholder="Password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="text-danger">
@@ -74,7 +73,7 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <div class="checkbox checkbox-primary pull-left p-t-0">
-                                <input name="remember" id="checkbox-signup" type="checkbox" {{ old('remember') ? 'checked' : '' }}>
+                                <input  name="remember" id="checkbox-signup" type="checkbox" {{ old('remember') ? 'checked' : '' }}>
                                 <label for="checkbox-signup"> Remember me </label>
                             </div>
                              </div>
@@ -107,6 +106,13 @@
 <!-- ===== Plugin JS ===== -->
 <!-- ===== Style Switcher JS ===== -->
 <script src="{{ asset('plugins/components/styleswitcher/jQuery.style.switcher.js') }}"></script>
+<script src="{{ asset('plugins/components/bootstrap-sweetalert/dist/sweetalert.min.js') }}"></script>
+@if (Session::has('logout'))
+
+<script type="text/javascript">
+   swal('Logout', "{{ Session::get('logout') }}", 'success');
+</script>
+@endif
 </body>
 
 

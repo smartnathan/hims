@@ -88,20 +88,20 @@
                                         <input required="required" type="number" class="form-control" id="duration" name="duration" placeholder="3"> </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="paid" class="col-sm-3 control-label">Paid</label>
+                                    <label for="paid" class="col-sm-3 control-label">Paid<span class="text-danger">*</span></label>
                                     <div class="col-sm-6">
                                 <div class="radio radio-primary">
-                                            <input type="radio" name="paid" id="radio1" value="0">
+                                            <input required="" id="paid" type="radio" name="paid" id="radio1" value="0">
                                             <label for="radio1"> No </label>
                                             &nbsp; &nbsp; &nbsp; &nbsp;
-                                            <input type="radio" name="paid" id="radio2" value="1">
+                                            <input required="" id="paid" type="radio" name="paid" id="radio2" value="1">
                                             <label for="radio2"> Yes </label>
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="paymenttype" class="col-sm-3 control-label">Payment Type</label>
+                                <div id="paymenttype" class="form-group" style="display: none;">
+                                    <label for="paymenttype" class="col-sm-3 control-label">Payment Type<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
                                          <select name="paymenttype" class="form-control select2">
                                     <option value="">--Select--</option>
@@ -173,4 +173,18 @@
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on('input', '#paid', function(e){
+            e.preventDefault();
+            var paymenttype = $('#paymenttype').hide();
+            if($(this).val() == 1) {
+                paymenttype.show();
+            }
+        });
+    });
+</script>
 @endsection

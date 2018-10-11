@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\Paymenttype;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymenttypesController extends Controller
 {
@@ -51,11 +51,10 @@ class PaymenttypesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $requestData = $request->all();
-        
-        Paymenttype::create($requestData);
 
+        $requestData = $request->all();
+        $requestData['added_by'] = Auth::user()->id;
+        Paymenttype::create($requestData);
         return redirect('admin/paymenttypes')->with('flash_message', 'Paymenttype added!');
     }
 
@@ -97,9 +96,9 @@ class PaymenttypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $requestData = $request->all();
-        
+
         $paymenttype = Paymenttype::findOrFail($id);
         $paymenttype->update($requestData);
 

@@ -3,7 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
             <div class="col-md-12 white-box">
                 <div class="card">
 <h3 class="box-title m-b-0">Payment Types</h3>
@@ -31,14 +38,20 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Name</th><th>Description</th><th>Added By</th><th>Actions</th>
+                                        <th>#</th><th>Name</th><th>Description</th><th>Added By</th>
+                                        <th>Date Added</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($paymenttypes as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->description }}</td><td>{{ $item->added_by }}</td>
+                                        <td>{{ $item->name }}</td><td>{{ $item->description }}</td>
+                                        <td><label class="label label-success">
+                                            {{ $item->user->roles[0]->label }}
+                                        </label></td>
+                                        <td>{{ date('F d, Y h:i:s a', strtotime($item->created_at))}}</td>
                                         <td>
                                             <a href="{{ url('/admin/paymenttypes/' . $item->id) }}" title="View Paymenttype"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/paymenttypes/' . $item->id . '/edit') }}" title="Edit Paymenttype"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

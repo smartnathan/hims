@@ -98,8 +98,10 @@ class RoomsController extends Controller
     public function edit($id)
     {
         $room = Room::findOrFail($id);
-
-        return view('admin.rooms.edit', compact('room'));
+        $roomtypes = Roomtype::select('id', 'name')->get();
+        $roomtypes = $roomtypes->pluck('name', 'id');
+        $roomtypes->prepend('--Select--', '');
+        return view('admin.rooms.edit', compact('room', 'roomtypes'));
     }
 
     /**

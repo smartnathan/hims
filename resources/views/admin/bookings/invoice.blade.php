@@ -2,7 +2,7 @@
 @section('content')
 <!-- /.row -->
 <div class="row">
-<div class="col-md-12">
+<div class="col-md-8 col-md-offset-2">
 <div class="white-box printableArea">
 <h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
 <hr>
@@ -12,9 +12,9 @@
         <address>
             <h3> &nbsp;<b class="text-danger">{{ config('app.name')}}</b></h3>
             <p class="text-muted m-l-5">
-                {{ $bookings->user->address}}
+                {{ $user->address}}
                 <br />
-                {{ $bookings->user->lga->name}}, {{ $bookings->user->lga->state->name}}.
+                {{ $user->lga->name}}, {{ $user->lga->state->name}}.
             </p>
         </address>
     </div>
@@ -22,12 +22,12 @@
         <address>
             <h3>To,</h3>
             <h4 class="font-bold">
-                {{ $bookings->user->surname}}, {{ $bookings->user->firstname}} {{ $bookings->user->othername}}
+                {{ $user->surname}}, {{ $user->firstname}} {{ $user->othername}}
             </h4>
             <p class="text-muted m-l-30">
-                {{ $bookings->user->address}}
+                {{ $user->address}}
                 <br />
-                {{ $bookings->user->lga->name}}, {{ $bookings->user->lga->state->name}}.
+                {{ $user->lga->name}}, {{ $user->lga->state->name}}.
             </p>
             <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> 23rd Jan 2017
                 {{ date('d F Y', time())}}
@@ -44,22 +44,22 @@
             <thead>
                 <tr>
                     <th class="text-center">#</th>
-                    <th>Description</th>
-                    <th class="text-right">Quantity</th>
-                    <th class="text-right">Unit Cost</th>
-                    <th class="text-right">Total</th>
+                    <th>Type</th>
+                    <th class="text-right">Description</th>
+                    <th class="text-right">Date</th>
+                    <th class="text-right">Price</th>
                 </tr>
             </thead>
             <tbody>
-                @if ($menuorders)
-                 @foreach ($menuorders as $order)
+                @if ($transactions)
+                 @foreach ($transactions as $order)
                   <tr>
                 <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{$order->menu->name }}</td>
-                <td class="text-right"> {{ $order->quantity }} </td>
-                <td class="text-right"> {{ $order->menu->price }} </td>
-                <td class="text-right"> {{ $order->menu->price * $order->quantity }} </td>
-                @php $total += $order->menu->price * $order->quantity @endphp
+                <td>{{$order->type }}</td>
+                <td class="text-right"> {{ $order->description}} </td>
+                <td class="text-right"> {{ $order->created_at }} </td>
+                <td class="text-right"> {{ $order->price }} </td>
+                @php $total += $order->price @endphp
                 </tr>
                 @endforeach
 
@@ -79,7 +79,7 @@
     <div class="clearfix"></div>
     <hr>
     <div class="text-right action-btn">
-        <a class="btn btn-danger" href="{{ url('admin/' . $bookings->user_id .'/updateuserorder') }}">Confirm Payment</a>
+        <a onclick="confirmAlert();" class="btn btn-danger" href="javascript:;">Confirm Payment</a>
         <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
     </div>
 </div>
@@ -108,6 +108,26 @@
         });
 
     });
+
+    function confirmAlert(){
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to reverse this process after confirmation",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        closeOnConfirm: false,
+    },
+    function(){
+    swal('Completed!', 'Payment was successful', 'success');
+    setTimeout(function(){
+        window.location.href="{{ url('admin/' . $user->id .'/updateuserorder') }}";
+    }, 2000);
+
+    }
+    );
+}
+//end of function
     </script>
 
 @endsection

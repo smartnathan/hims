@@ -7,8 +7,7 @@
                 <div class="card">
     <h2 class="">Kitchen Menu Order</h2>
     <hr />
-    <h3 class="box-title m-b-0 text-center">Add a New Food & Drink Order</h3>
-                    <div class="card-body">
+    <div class="card-body">
                         <a href="{{ url('/admin/menuorders') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />

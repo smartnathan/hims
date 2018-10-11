@@ -3,7 +3,14 @@
 @section('content')
     <div class="container">
         <div class="row">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
             <div class="col-md-12 white-box">
                 <div class="card">
                     <h2 class="m-b-0">List of Available Food and Drinks</h2><hr />
@@ -37,6 +44,7 @@
                                         <th>Price</th>
                                         <th>Added By</th>
                                         <th>Date Added</th>
+                                        <th>Date Updated</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -64,6 +72,9 @@
                                         </td>
                                         <td>
                                         {{ $item->created_at->diffForHumans() }}
+                                        </td>
+                                        <td>
+                                        {{ $item->updated_at->diffForHumans() }}
                                         </td>
                                         <td>
                                             <a href="{{ url('/admin/menus/' . $item->id) }}" title="View Menu"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

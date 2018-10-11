@@ -17,12 +17,11 @@ Route::get('/records', function(){
 $records = Setting::where('name', 'ROOM_TRANSFER_CHARGES')->first()->value;
 dd($records);
 });
-Route::get('/', 'Auth\LoginController@showLoginForm');
+Route::get('/', 'Auth\LoginController@showLoginForm')->name('loginPage');
 
 Auth::routes();
 Route::get('admin/users/lga', 'Admin\UsersController@lga');
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => 'auth'], function() {
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');
 Route::get('admin/checkout', 'Admin\\BookingsController@checkoutCreate');

@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Menuorder::class)->orderBy('id', 'desc');
     }
+
+    public function transactionHistories()
+    {
+        return $this->hasMany(GuestTransactionHistory::class)->orderByDesc('id');
+    }
 }
