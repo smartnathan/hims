@@ -142,6 +142,7 @@ function checkPrice($oldPrice, $newPrice)
      */
     public function update(Request $request, $id)
     {
+        //Room transfer logics start here
          $this->authorize('update-booking');
         if ($request->has('transfer_id') && $request->get('transfer_id') == 'trans1920') {
         $requestData = $request->all();
@@ -272,8 +273,12 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
         }
          $guest_transaction->save();
 
-        // return redirect('admin/bookings')->with('booked_message', 'Room was successfully booked!');
+        if ($request->paid == 1) {
+        return redirect("admin/{$request->user_id}/invoice?paid=completed")->with('booked_message', 'Room was successfully booked, print payment receipt');
+        } else {
         return redirect('admin')->with('booked_message', 'Room was successfully booked!');
+        }
+
 
     }
 
@@ -282,8 +287,16 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
         $this->authorize('view-booking');
         $total = 0;
         $user = User::find($id);
+        if (request()->has('paid') && request()->get('paid') == 'completed') {
+          $transactions = GuestTransactionHistory::where('user_id', $id)
+        ->where('status', 'credit')
+        ->whereDay('created_at', '=', date('d'))
+        ->get();
+        } else {
         $transactions = GuestTransactionHistory::where('user_id', $id)
         ->where('status', 'debit')->get();
+        }
+
             return view('admin.bookings.invoice', compact('transactions', 'total', 'user'));
     }
 

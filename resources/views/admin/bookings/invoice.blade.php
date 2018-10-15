@@ -6,6 +6,14 @@
 <div class="white-box printableArea">
 <h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
 <hr>
+@if (Session::has('booked_message'))
+
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('booked_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
 <div class="row">
 <div class="col-md-12">
     <div class="pull-left">
@@ -79,7 +87,9 @@
     <div class="clearfix"></div>
     <hr>
     <div class="text-right action-btn">
+        @if (!request()->has('paid'))
         <a onclick="confirmAlert();" class="btn btn-danger" href="javascript:;">Confirm Payment</a>
+        @endif
         <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
     </div>
 </div>
