@@ -23,7 +23,7 @@ class BookingsController extends Controller
     public function index(Request $request)
     {
         $this->authorize('view-all-booking');
-        $keyword = $request->get('search');
+        $keyword = trim($request->get('search'));
         $perPage = 25;
 
         if (!empty($keyword)) {

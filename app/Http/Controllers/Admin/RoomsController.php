@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Facility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Room;
@@ -60,6 +61,7 @@ class RoomsController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $this->validate($request, [
 			'name' => 'required',
 			'roomtype_id' => 'required',
@@ -68,9 +70,18 @@ class RoomsController extends Controller
 		]);
         $requestData = $request->all();
         $requestData['added_by'] = Auth::user()->id;
-
-        Room::create($requestData);
-
+        $fname = $requestData['fname'];
+        $room = Room::create($requestData);
+        $x = 0;
+        foreach ($fname as $name) {
+            $room_facility = new Facility();
+            $room_facility->room_id = $room->id;
+            $room_facility->name = $name;
+            $room_facility->company_tag = $requestData['fcompany_tag'][$x];
+            $room_facility->description = $requestData['fdescription'][$x];
+            $room_facility->save();
+            $x++;
+        }
         return redirect('admin/rooms')->with('flash_message', 'Room added!');
     }
 

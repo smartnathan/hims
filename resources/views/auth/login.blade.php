@@ -32,22 +32,24 @@
     </div>
 
 
-<nav class="pull-left navb navbar-laravel">
+{{--  <nav class="pull-right navb navbar-">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
             </div>
-        </nav>
+</nav> --}}
 
 
     <section id="wrapper" class="login-register">
         <div class="login-box">
             <div class="white-box">
-
+                 <div class="text-center">
+                    <img width="40%" src="{{ asset('plugins/images/login.jpg') }}" alt="Login Image">
+                </div>
                 <form class="form-horizontal form-material" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf
-                    <h3 class="box-title m-b-20">Authentication</h3>
+{{--                     <h3 class="box-title m-b-20">Authentication</h3> --}}
                     @if ($errors->has('email'))
                                     <span>
                     <strong style="color: red">{{ $errors->first('email') }}</strong>
@@ -55,13 +57,15 @@
                                 @endif
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <input autocomplete="" placeholder="Email Address" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                            <label for="email">Username or Email:</label>
+                            <input placeholder="Email Address" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                         </div>
 
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input autocomplete="" placeholder="Password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                            <label for="password">Password:</label>
+                            <input placeholder="Password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="text-danger">

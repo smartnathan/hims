@@ -6,12 +6,19 @@
 
             <div class="col-md-12 white-box">
                 <div class="card">
-                    <h3 class="box-title m-b-0">Facilities</h3>
+                    <h2>Room Facilities</h2>
                     <div class="card-body">
-                        <a href="{{ url('/admin/facilities/create') }}" class="btn btn-success btn-sm" title="Add New Facility">
+                        {{-- <a href="{{ url('/admin/facilities/create') }}" class="btn btn-success btn-sm" title="Add New Facility">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                        </a>
+                        </a> --}}
+ @if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/facilities', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
                         <div class="text-right">
                             <div class="input-group">
@@ -31,14 +38,18 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Room Id</th><th>Name</th><th>Company Tag</th><th>Actions</th>
+                                        <th>#</th><th>Room Name</th>
+                                        <th>Room Category</th>
+                                        <th> Facility name</th><th>Company Tag</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($facilities as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->room_id }}</td><td>{{ $item->name }}</td><td>{{ $item->company_tag }}</td>
+                                        <td>{{ $item->room->name }}</td>
+                                        <td>{{ $item->room->roomtype->name }}</td>
+                                        <td>{{ $item->name }}</td><td>{{ $item->company_tag }}</td>
                                         <td>
                                             <a href="{{ url('/admin/facilities/' . $item->id) }}" title="View Facility"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/facilities/' . $item->id . '/edit') }}" title="Edit Facility"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

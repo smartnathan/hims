@@ -49,3 +49,5 @@ Route::resource('admin/states', 'Admin\\StatesController');
 Route::resource('admin/lgas', 'Admin\\LgasController');
 Route::resource('admin/navigationmenus', 'Admin\\NavigationmenusController');
 });
+
+Route::resource('admin/nationalities', 'Admin\\NationalitiesController');

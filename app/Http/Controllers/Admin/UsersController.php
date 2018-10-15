@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Booking;
 use App\Http\Controllers\Controller;
 use App\Lga;
+use App\Nationality;
 use App\Occupation;
 use App\Role;
 use App\Room;
@@ -61,7 +62,11 @@ class UsersController extends Controller
         $states = State::select('id', 'name')->get()
         ->pluck('name', 'id');
         $states->prepend('--Select--', '');
-        return view('admin.users.create', compact('states', 'roles', 'occupations'));
+        $nationalities = Nationality::select('id', 'name')->get()
+        ->pluck('name', 'id');
+        $nationalities->prepend('--Select--', '');
+        $occupations->prepend('--Select--', '');
+        return view('admin.users.create', compact('nationalities', 'states', 'roles', 'occupations'));
     }
 
     public function lga(Request $request)
@@ -161,6 +166,9 @@ class UsersController extends Controller
         $states = State::select('id', 'name')->get()
         ->pluck('name', 'id');
         $states->prepend('--Select--', '');
+        $nationalities = Nationality::select('id', 'name')->get()
+        ->pluck('name', 'id');
+        $nationalities->prepend('--Select--', '');
 
         $user = User::with('roles')->select('id',
             'firstname',
@@ -172,6 +180,7 @@ class UsersController extends Controller
             'occupation_id',
             'username',
             'gender',
+            'nationality_id',
             'designation',
              'email')->findOrFail($id);
         $user_roles = [];
@@ -179,7 +188,7 @@ class UsersController extends Controller
             $user_roles[] = $role->name;
         }
 
-        return view('admin.users.edit', compact('occupations', 'states','user', 'roles', 'user_roles'));
+        return view('admin.users.edit', compact('nationalities', 'occupations', 'states','user', 'roles', 'user_roles'));
     }
 
     /**

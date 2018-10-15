@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Facility extends Model
+class Nationality extends Model
 {
     use SoftDeletes;
     /**
@@ -13,7 +13,7 @@ class Facility extends Model
      *
      * @var string
      */
-    protected $table = 'facilities';
+    protected $table = 'nationalities';
 
     /**
     * The database primary key value.
@@ -27,11 +27,7 @@ class Facility extends Model
      *
      * @var array
      */
-    protected $fillable = ['room_id', 'name', 'company_tag', 'description'];
+    protected $fillable = ['name'];
 
-    public function room()
-    {
-        return $this->belongsTo(Room::class);
-    }
-
+    
 }

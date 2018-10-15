@@ -116,7 +116,8 @@
 <div class="col-md-6">
 <div class="form-group">
     <label>Nationality</label>
-    <input type="text" class="form-control"> </div>
+     {!! Form::select('nationality_id', $nationalities, isset($user) ? $user->nationality_id: '', ['class' => 'form-control select2', 'required' => 'required']) !!}
+     </div>
 </div>
 <!--/span-->
 </div>

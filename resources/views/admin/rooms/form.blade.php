@@ -39,40 +39,41 @@
     <h2 class="text-center">Room Facilitites</h2>
 </div>
 
-
+<style type="text/css">
+    .spacer {
+        margin: 10px 0 ;
+    }
+</style>
 {{-- Begin facility form --}}
-<div class="row" id="room-facility" style="margin: 15px">
-  <div class="entry">
-<div class="form-grop">
-    <div class="col-md-3">
-        {!! Form::text('fname', null, ['placeholder' => 'Facility Name', 'class' => 'form-control', 'required' => 'required']) !!}
+<div class="room-facility  text-center">
+  <div class="entry form-inline">
+<div class="form-group">
+    <div class="col-md-12">
+        {!! Form::text('fname[]', null, ['placeholder' => 'Facility Name', 'class' => 'form-control', 'required' => 'required']) !!}
     </div>
 </div>
 
-<div class="form-grup">
-    <div class="col-md-3">
-        {!! Form::text('company_tag', null, ['placeholder' => 'Company Tag', 'class' => 'form-control', 'required' => 'required']) !!}
+<div class="form-group">
+    <div class="col-md-12">
+        {!! Form::text('fcompany_tag[]', null, ['placeholder' => 'Company Tag', 'class' => 'form-control', 'required' => 'required']) !!}
     </div>
 </div>
 
-<div class="form-grou">
-    <div class="col-md-4">
-        {!! Form::text('description', null, ['placeholder' => 'Description', 'class' => 'form-control', 'required' => 'required']) !!}
+<div class="form-group">
+    <div class="col-md-12">
+        {!! Form::text('fdescription[]', null, ['placeholder' => 'Description', 'class' => 'form-control', 'required' => 'required']) !!}
     </div>
 </div>
 
-<div class="form-grou">
-    <div class="col-md-2">
-        <button type="button"  class="add-facility btn btn-success">Add</button>
+<div class="form-group">
+    <div class="col-md-12">
+        <button type="button"  class="add-facility btn btn-success"><span class="fa fa-plus"></span> Add New</button>
     </div>
 </div>
 </div>
-
 </div>
+
 {{-- End facility form --}}
-<div id="new-form">
-
-</div>
 
 
 <div class="form-group">
@@ -83,24 +84,26 @@
 
 @section('scripts')
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('.add-facility').on('click', function(){
-            //var room = $('#room-facility').clone().appendTo('#new-form');
-            var roomFacility = $('#room-facility'),
-                    currentEntry = $(this).parents('.entry:first'),
-                    newEntry = $(currentEntry.clone()).appendTo(roomFacility);
+    $( document ).ready(function() {
+            $(document).on('click', '.add-facility', function(e) {
+                e.preventDefault();
 
-            newEntry.find('input').val('');
-            roomFacility.find('.entry:not(:last) .add-facility')
-                    .removeClass('add-facility').addClass('remove-facility')
+                var tableFields = $('.room-facility'),
+                    currentEntry = $(this).parents('.entry:first'),
+                    newEntry = $(currentEntry.clone()).appendTo(tableFields);
+
+                newEntry.find('input').val('');
+                tableFields.find('.entry:not(:last) .add-facility')
+                    .removeClass('add-facility').addClass('btn-remove')
                     .removeClass('btn-success').addClass('btn-danger')
                     .html('<span class="fa fa-minus"></span> Remove');
-        }).on('click', '.remove-facility', function(e) {
+            }).on('click', '.btn-remove', function(e) {
                 $(this).parents('.entry:first').remove();
 
                 e.preventDefault();
                 return false;
             });
-    });
+
+        });
 </script>
 @endsection

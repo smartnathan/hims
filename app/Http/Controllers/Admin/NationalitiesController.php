@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Facility;
-use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Room;
+use App\Http\Controllers\Controller;
+
+use App\Nationality;
 use Illuminate\Http\Request;
 
-class FacilitiesController extends Controller
+class NationalitiesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,17 +21,13 @@ class FacilitiesController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $facilities = Facility::where('room_id', 'LIKE', "%$keyword%")
-                ->orWhere('name', 'LIKE', "%$keyword%")
-                ->orWhere('company_tag', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
-                ->orWhere('added_by', 'LIKE', "%$keyword%")
+            $nationalities = Nationality::where('name', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
         } else {
-            $facilities = Facility::paginate($perPage);
+            $nationalities = Nationality::paginate($perPage);
         }
 
-        return view('admin.facilities.index', compact('facilities'));
+        return view('admin.nationalities.index', compact('nationalities'));
     }
 
     /**
@@ -41,7 +37,7 @@ class FacilitiesController extends Controller
      */
     public function create()
     {
-        return view('admin.facilities.create');
+        return view('admin.nationalities.create');
     }
 
     /**
@@ -54,16 +50,13 @@ class FacilitiesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'room_id' => 'required',
-			'name' => 'required',
-			'company_tag' => 'required',
-			'description' => 'required'
+			'name' => 'required'
 		]);
         $requestData = $request->all();
+        
+        Nationality::create($requestData);
 
-        Facility::create($requestData);
-
-        return redirect('admin/facilities')->with('flash_message', 'Facility added!');
+        return redirect('admin/nationalities')->with('flash_message', 'Nationality added!');
     }
 
     /**
@@ -75,9 +68,9 @@ class FacilitiesController extends Controller
      */
     public function show($id)
     {
-        $facility = Facility::findOrFail($id);
+        $nationality = Nationality::findOrFail($id);
 
-        return view('admin.facilities.show', compact('facility'));
+        return view('admin.nationalities.show', compact('nationality'));
     }
 
     /**
@@ -89,9 +82,9 @@ class FacilitiesController extends Controller
      */
     public function edit($id)
     {
-        $facility = Facility::findOrFail($id);
-        $rooms = Room::select('id', 'name')->get();
-        return view('admin.facilities.edit', compact('rooms', 'facility'));
+        $nationality = Nationality::findOrFail($id);
+
+        return view('admin.nationalities.edit', compact('nationality'));
     }
 
     /**
@@ -105,17 +98,14 @@ class FacilitiesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-			'room_id' => 'required',
-			'name' => 'required',
-			'company_tag' => 'required',
-			'description' => 'required'
+			'name' => 'required'
 		]);
         $requestData = $request->all();
+        
+        $nationality = Nationality::findOrFail($id);
+        $nationality->update($requestData);
 
-        $facility = Facility::findOrFail($id);
-        $facility->update($requestData);
-
-        return redirect('admin/facilities')->with('flash_message', 'Facility has been updated!');
+        return redirect('admin/nationalities')->with('flash_message', 'Nationality updated!');
     }
 
     /**
@@ -127,8 +117,8 @@ class FacilitiesController extends Controller
      */
     public function destroy($id)
     {
-        Facility::destroy($id);
+        Nationality::destroy($id);
 
-        return redirect('admin/facilities')->with('flash_message', 'Facility deleted!');
+        return redirect('admin/nationalities')->with('flash_message', 'Nationality deleted!');
     }
 }

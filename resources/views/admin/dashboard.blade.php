@@ -66,11 +66,11 @@
                 {{-- CALL TO ACTION BUTTONS --}}
             @if (Auth::user()->hasRole('receptionist'))
                 <div class="text-center" style="margin-bottom: 10px">
-                        <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/users/create?type=guest') }}">Register a Guest</a>
+                        <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/users/create?type=guest') }}"><i class="fa fa-user-plus"></i> Register a Guest</a>
 
-                        <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-success btn-lg" href="{{ url('/admin/bookroom') }}">Check-in Guest</a>
-                        <a style=" margin-right: 10px; font-weight: bolder;" class="btn btn-danger btn-lg" href="{{ url('/admin/bookings') }}">Room Transfer</a>
-                        <a style="font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/checkout') }}">Check-out Guest</a>
+                        <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-success btn-lg" href="{{ url('/admin/bookroom') }}"><i class="fa fa-sign-in"></i> Check-in Guest</a>
+                        <a style=" margin-right: 10px; font-weight: bolder;" class="btn btn-danger btn-lg" href="{{ url('/admin/bookings') }}"><i class="fa fa-upload"></i> Room Transfer</a>
+                        <a style="font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/checkout') }}"><i class="fa fa-sign-out"></i> Check-out Guest</a>
                     </div>
 @endif
         {{-- Recent added guest comes in here --}}
