@@ -7,6 +7,16 @@
         <div class="panel-heading"> Book a Room
 
         </div>
+
+        @if (Session::has('error_message'))
+        @section('scripts')
+ <script type="text/javascript">
+            swal('WHOOP!', "{{ Session::get('error_message') }}", 'error');
+        </script>
+        @endsection
+@endif
+
+
         <div class="panel-wrapper collapse in" aria-expanded="true">
             <div class="panel-body">
                 <h4>Enter the guest surname, mobile number or email</h4>

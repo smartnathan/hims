@@ -247,7 +247,13 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
     public function storebooking(Request $request)
     {
         $this->authorize('create-booking');
-        $booking = new Booking;
+/* Check if a guest has booked a room before*/
+$user = Booking::where('user_id', $request->user_id)
+->where('departure_date', null)->first();
+if (isset($user)) {
+    return redirect('admin/bookroom')->with('error_message', "You have already been checked into {$user->room->name} room, {$user->created_at->diffForHumans()}. You can only checkout or tranfer to a different room.");
+} else {
+    $booking = new Booking;
         $booking['room_id'] = $request->room;
         $booking['arrival_date'] = date('Y-m-d H:i:s', time());
         $booking['user_id'] = $request->user_id;
@@ -278,7 +284,7 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
         } else {
         return redirect('admin')->with('booked_message', 'Room was successfully booked!');
         }
-
+}
 
     }
 
