@@ -23,6 +23,7 @@ Auth::routes();
 Route::get('admin/users/lga', 'Admin\UsersController@lga');
 
 Route::group(['middleware' => 'auth'], function() {
+//Routes for Hotel Booking system
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');
 Route::get('admin/checkout', 'Admin\\BookingsController@checkoutCreate');
 Route::get('admin/{id}/invoice', 'Admin\\BookingsController@invoice');
@@ -48,6 +49,20 @@ Route::resource('admin/serviceorders', 'Admin\\ServiceordersController');
 Route::resource('admin/states', 'Admin\\StatesController');
 Route::resource('admin/lgas', 'Admin\\LgasController');
 Route::resource('admin/navigationmenus', 'Admin\\NavigationmenusController');
+
+//Newly added routes for Inventory system
+Route::resource('admin/nationalities', 'Admin\\NationalitiesController');
+Route::resource('admin/item-categories', 'Admin\\ItemCategoriesController');
+Route::resource('admin/item-groups', 'Admin\\ItemGroupsController');
+Route::resource('admin/item-brand-manufacturers', 'Admin\\ItemBrandManufacturersController');
+Route::resource('admin/item-brands', 'Admin\\ItemBrandsController');
+Route::resource('admin/item-stocks', 'Admin\\ItemStocksController');
+Route::resource('admin/item-suppliers', 'Admin\\ItemSuppliersController');
+Route::resource('admin/item-purchase-orders', 'Admin\\ItemPurchaseOrdersController');
+Route::resource('admin/item-purchase-order-line', 'Admin\\ItemPurchaseOrderLineController');
+Route::resource('admin/item-instances', 'Admin\\ItemInstancesController');
+Route::resource('admin/items', 'Admin\\ItemsController');
+Route::resource('admin/item-uoms', 'Admin\\ItemUomsController');
+Route::resource('admin/item-images', 'Admin\\ItemImagesController');
 });
 
-Route::resource('admin/nationalities', 'Admin\\NationalitiesController');

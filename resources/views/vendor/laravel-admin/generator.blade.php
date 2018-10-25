@@ -9,7 +9,14 @@
                 <div class="card">
                     <div class="card-header">Generator</div>
                     <div class="card-body">
+@if (Session::has('flash_message'))
 
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed!', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+@endif
                         <form class="form-horizontal" method="post" action="{{ url('/admin/generator') }}">
                             {{ csrf_field() }}
 
