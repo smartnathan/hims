@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Booking;
 use App\GuestTransactionHistory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -108,8 +109,12 @@ class MenuordersController extends Controller
     public function show($id)
     {
         $this->authorize('view-menuorder');
-        $menuorder = Menuorder::findOrFail($id);
-
+        //$menuorder = Menuorder::findOrFail($id);
+        $booking = Booking::where('user_id', $id)
+        ->where('departure_date', null)->first();
+        //dd($booking);
+        $menuorder = Menuorder::where('user_id', $id)
+        ->orderByDesc('id')->get();
         return view('admin.menuorders.show', compact('menuorder'));
     }
 
@@ -141,11 +146,24 @@ class MenuordersController extends Controller
     public function update(Request $request, $id)
     {
         $this->authorize('update-menuorder');
-        $requestData = $request->all();
-        $menuorder = Menuorder::findOrFail($id);
-        $menuorder->update($requestData);
+        $menuitems = $request->menuitems;
+        foreach ($menuitems as $item) {
+        $menuorder = Menuorder::findOrFail($item);
+        $menuorder->update(['status' => 1]);
+        }
 
-        return redirect('admin/menuorders')->with('flash_message', 'Menu order was successfully updated');
+        if ($request->has('itempaid')) {
+            $guest_transaction = GuestTransactionHistory::where('user_id', $id)
+            ->where('type', 'food&drink')
+            ->update(['status'=> 'credit']);
+
+            foreach ($menuitems as $item) {
+        $menuorder = Menuorder::findOrFail($item);
+        $menuorder->update(['paid' => 1]);
+        }
+        }
+
+        return redirect('admin/menuorders/'. $id)->with('flash_message', 'Food And drink order was successfully updated!');
     }
 
     public function updateUserOrder($id)

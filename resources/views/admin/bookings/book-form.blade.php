@@ -19,7 +19,7 @@
 
         <div class="panel-wrapper collapse in" aria-expanded="true">
             <div class="panel-body">
-                <h4>Enter the guest surname, mobile number or email</h4>
+                <h4>Enter the guest mobile number or email</h4>
 {!! Form::open(['method' => 'GET', 'url' => '/admin/bookroom', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
 <div class="">
 <div class="input-group">
@@ -89,13 +89,13 @@
                     @endforeach
                 </tbody>
             </table>
-            <h4>Additional Booking Information</h4>
+            <h4>Additional checking-in Information</h4>
                <div class="row">
                    <div class="col-md-8 col-md-offset">
                           <div class="form-group">
                                     <label for="duration" class="col-sm-3 control-label">Number of Days<span class="text-danger">*</span></label>
                                     <div class="col-sm-9">
-                                        <input required="required" type="number" class="form-control" id="duration" name="duration" placeholder="3"> </div>
+                                        <input required="required" type="number" class="form-control" id="duration" name="duration" placeholder="Enter the number of day(s)"> </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="paid" class="col-sm-3 control-label">Paid<span class="text-danger">*</span></label>

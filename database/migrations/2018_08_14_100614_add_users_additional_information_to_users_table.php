@@ -16,7 +16,7 @@ class AddUsersAdditionalInformationToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('firstname');
             $table->string('surname');
-            $table->string('othername');
+            $table->string('othername')->nullable();
             $table->string('mobile_number')->unique();
             $table->string('username')->nullable();
             $table->string('address')->nullable();

@@ -57,7 +57,7 @@
                                 @endif
                     <div class="form-group ">
                         <div class="col-xs-12">
-                            <label for="email">Username or Email:</label>
+                            <label for="email">Email Address:</label>
                             <input placeholder="Email Address" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
                         </div>
 

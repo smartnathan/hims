@@ -9,9 +9,11 @@ use App\Http\Requests;
 use App\Menuorder;
 use App\Paymenttype;
 use App\Room;
+use App\Setting;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BookingsController extends Controller
 {
@@ -44,6 +46,13 @@ class BookingsController extends Controller
         }
 
         return view('admin.bookings.index', compact('bookings'));
+    }
+
+    public function room_transfer()
+    {
+        $perPage = 25;
+        $bookings = Booking::where('departure_date', null)->latest()->paginate($perPage);
+        return view('admin.bookings.room-transfer', compact('bookings'));
     }
 
     /**
@@ -109,18 +118,6 @@ class BookingsController extends Controller
     }
 
 
-function checkPrice($oldPrice, $newPrice)
-    {
-        if ($oldPrice < $newPrice) {
-            return "debit";
-        }
-        elseif ($oldPrice > $newPrice) {
-            return "credit";
-        }
-        elseif ($oldPrice == $newPrice) {
-            return "match";
-        }
-    }
     /**
      * Update the specified resource in storage.
      *
@@ -187,31 +184,11 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
         $room = Room::findOrFail($roomId);
         $room['is_booked'] = 1;
         $room->save();
-        $check = $this->checkPrice($old_room_price, $new_room_price);
-        if ($check == "debit") {
-            return redirect('admin/bookings')->with('transfer_message', 'Room transfer was successful!')->with('debit', $result);
-        }
-        elseif ($check == "credit") {
-           return redirect('admin/bookings')->with('transfer_message', 'Room transfer was successful!')->with('credit', $result);
-        }
-        elseif ($check == "match") {
- return redirect('admin/bookings')->with('transfer_message', 'Room transfer was successful!')->with('match', $result);
-        }
 
-        }
+ return redirect('admin/bookings/room-transfer')->with('flash_message', 'Room transfer was successful!');
 
-
-        $this->validate($request, [
-			'room_id' => 'required',
-			'arrival_date' => 'required'
-		]);
-        $requestData = $request->all();
-
-        $booking = Booking::findOrFail($id);
-        $booking->update($requestData);
-
-        return redirect('admin/bookings')->with('flash_message', 'Booking updated!');
     }
+}
 
     /**
      * Remove the specified resource from storage.
@@ -282,7 +259,7 @@ if (isset($user)) {
         if ($request->paid == 1) {
         return redirect("admin/{$request->user_id}/invoice?paid=completed")->with('booked_message', 'Room was successfully booked, print payment receipt');
         } else {
-        return redirect('admin')->with('booked_message', 'Room was successfully booked!');
+        return redirect('admin')->with('booked_message', 'Guest has been succcessfully checked into room!');
         }
 }
 
@@ -313,11 +290,35 @@ if (isset($user)) {
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $bookings = Booking::where('room_id', 'LIKE', "%$keyword%")
-                ->orWhere('user_id', 'LIKE', "%$keyword%")
-                ->paginate($perPage);
+            // $bookings = Booking::join('users', 'bookings.user_id', '=', 'users.id')
+            // ->where('departure_date', NULL)
+            // ->where('firstname', 'LIKE', "%$keyword%")
+            // ->orWhere('surname', 'LIKE', "%$keyword%")
+            // ->get();
+
+            // $bookings =
+            // ->join('users', 'users.id', '=', 'bookings.user_id')
+            // ->join('rooms', 'rooms.id', '=', 'bookings.room_id')
+            // ->join('guest_transaction_histories', 'guest_transaction_histories.user_id', '=', 'users.id')
+            // ->where('firstname', 'LIKE', "%$keyword%")
+            // ->where('departure_date', null)
+            // ->orWhere('surname', 'LIKE', "%$keyword%")
+            // ->limit(1)
+            // ->get();
+
+            $bookings = Booking::with(['user.transactionHistories', 'room'])
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('rooms', 'rooms.id', '=', 'bookings.room_id')
+            ->join('guest_transaction_histories', 'guest_transaction_histories.user_id', '=', 'users.id')
+            ->where('firstname', 'LIKE', "%$keyword%")
+             ->where('departure_date', null)
+             ->orWhere('surname', 'LIKE', "%$keyword%")
+             ->orderBy('bookings.id', 'asc')
+             ->limit(1)
+             ->get();
+
         } else {
-            $bookings = Booking::where('departure_date', NULL)->paginate($perPage);
+            $bookings = Booking::where('departure_date', null)->latest()->paginate($perPage);
         }
         return view('admin.bookings.checkout', compact('bookings'));
     }

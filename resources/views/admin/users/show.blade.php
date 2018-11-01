@@ -123,10 +123,17 @@
                         <br>
                         <p class="text-muted">{{ $user->mobile_number }}</p>
                     </div>
+                    @if ($user->roles[0]->name == "guest")
                     <div class="col-md-3 col-xs-6 b-r"> <strong>Occupation</strong>
                         <br>
                         <p class="text-muted">{{ $user->occupation->name }}</p>
                     </div>
+                    @else
+                    <div class="col-md-3 col-xs-6 b-r"> <strong>Role</strong>
+                        <br>
+                        <p class="text-muted">{{ $user->roles[0]->label }}</p>
+                    </div>
+                    @endif
                     <div class="col-md-3 col-xs-6"> <strong>Address</strong>
                         <br>
                         <p class="text-muted">{{ $user->address }}</p>

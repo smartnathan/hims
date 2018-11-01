@@ -44,7 +44,7 @@
                             {{ count($menuorders) }}
                             @endif
                                      <span class="pull-right"><i class="mdi mdi-food"></i></span></h3>
-                                    <p class="info-text font-12">Total Food&Drinks Order Today</p>
+                                    <p class="info-text font-12">Total Food & Drinks Order Today</p>
                                     {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                             <div class="media bg-warning">
                                 <div class="media-body">
                                     <h3 class="info-count">₦{{ $total_income}}.00<span class="pull-right"><i class="mdi mdi-cash"></i></span></h3>
-                                    <p class="info-text font-12">Income Today</p>
+                                    <p class="info-text font-12">Total Income Today</p>
 
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                         <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/users/create?type=guest') }}"><i class="fa fa-user-plus"></i> Register a Guest</a>
 
                         <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-success btn-lg" href="{{ url('/admin/bookroom') }}"><i class="fa fa-sign-in"></i> Check-in Guest</a>
-                        <a style=" margin-right: 10px; font-weight: bolder;" class="btn btn-danger btn-lg" href="{{ url('/admin/bookings') }}"><i class="fa fa-upload"></i> Room Transfer</a>
+                        <a style=" margin-right: 10px; font-weight: bolder;" class="btn btn-danger btn-lg" href="{{ url('/admin/bookings/room-transfer') }}"><i class="fa fa-upload"></i> Room Transfer</a>
                         <a style="font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/checkout') }}"><i class="fa fa-sign-out"></i> Check-out Guest</a>
                     </div>
 @endif
@@ -87,8 +87,106 @@
                                 </script>
                     @endsection
                 @endif
-                                <div class="col-sm-6">
-                                    <h4 class="box-title">Recently Checked-In Guest Log</h4>
+
+
+@if (Auth::user()->hasRole('chef'))
+<div class="col-sm-6">
+                                    <h4 class="box-title">Available Food & Drinks for Guest</h4>
+                                </div>
+
+                                {!! Form::open(['method' => 'GET', 'url' => '/admin', 'class' => 'form-inline my-2 my-lg-0', 'role' => 'search'])  !!}
+<div class="text-right">
+    @if(request()->has('search'))
+    <a style="margin-right: 40px; font-weight: bolder" href="{{ url('/admin')}}">Show all Available Food & Drinks</a>
+    @endif
+<div class="input-group">
+<input style="height: 45px; font-size: 18px" type="text" class="form-control" name="search" placeholder="Food or Drink">
+<span class="input-group-btn">
+<button class="btn btn-primary" type="submit">
+    <i class="fa fa-search"></i>
+</button>
+</span>
+</div>
+</div>
+{!! Form::close() !!}
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                             S/N
+                                            </th>
+                                            <th>Food & Drink</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Date Added</th>
+                                            <th>Added by</th>
+                                            <th>Date Updated</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @if (count($food_drinks) > 0)
+                                        @foreach ($food_drinks as $item)
+                                        <tr>
+                                            <td>
+                                            {{ $loop->iteration }}
+                                            </td>
+                                            <td>{{$item->name}}</td>
+                                            <td>
+                                                @if (strtolower($item->menutype->name) == 'drink')
+                                                <span class="label label-danger">
+                                            {{ $item->menutype->name }}
+                                        </span>
+                                                @elseif(strtolower($item->menutype->name) == 'food')
+                                                <span class="label label-success">
+                                            {{ $item->menutype->name }}
+                                        </span>
+                                                @else
+                                                <span class="label label-primary">
+                                            {{ $item->menutype->name }}
+                                        </span>
+                                                @endif
+                                                </td>
+                                            <td>
+                                        <span style="font-weight: bolder" class="label label-danger">
+                                            ₦{{$item->price}}
+                                        </span>
+                                            </td>
+                                            <td>
+                                        {{ date('F d, Y g:i A', strtotime($item->created_at))}}
+                                            </td>
+                                            <td>
+                                       {{ $item->user->surname }} {{ $item->user->firstname }}
+                                            </td>
+                                <td>
+                                       {{ $item->updated_at }}
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @else
+                                        <tr>
+                                            <td colspan="7">
+                                                <div class="alert alert-danger">Sorry! No Food or Drink has been added to the system.</div>
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ul class="pagination">
+                            {{ $food_drinks->links() }}
+                            </ul>
+@else
+
+
+
+
+<div class="col-sm-6">
+                                    <h4 class="box-title">Recently Checked-In Guest Log<span><a style="margin-left: 30px;font-weight: bolder;" class="" href="{{ url('/admin/checkout') }}"><i class="fa fa-users"></i> All Checked-in Guests</a></span></h4>
                                 </div>
                                 <div class="col-sm-6">
                         @if(Auth::user()->hasRole('receptionist'))
@@ -111,11 +209,12 @@
                                             <th>
                                              S/N
                                             </th>
-                                            <th>Name</th>
-                                            <th>Room Name</th>
+                                            <th>Guest Full Name</th>
+                                            <th>Room</th>
+                                            <th>Room No.</th>
                                             <th>Role</th>
                                             <th>Date Checked-In</th>
-                                            <th>Checkeded-In By</th>
+                                            <th>Checked-In By</th>
                                             <th>Date Checked-out</th>
                                             @if(Auth::user()->hasRole('receptionist'))
                                             <th>Action</th>
@@ -131,6 +230,7 @@
                                             </td>
                                             <td><a href="{{ url('/admin/users/'.$book->user->id) }}">{{ $book->user->surname }}, {{ $book->user->firstname }} {{ $book->user->othername }} </a></td>
                                             <td>{{ $book->room->name }}</td>
+                                            <td>{{ $book->room->room_number }}</td>
                                             <td>
                                         <span class="label label-danger">
                                             {{ $book->user->roles[0]->label}}
@@ -166,6 +266,7 @@
                             <ul class="pagination">
                             {{ $bookings->links() }}
                             </ul>
+@endif
                         </div>
                     </div>
                 </div>

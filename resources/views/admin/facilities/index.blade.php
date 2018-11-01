@@ -7,6 +7,7 @@
             <div class="col-md-12 white-box">
                 <div class="card">
                     <h2>Room Facilities</h2>
+                    <hr />
                     <div class="card-body">
                         {{-- <a href="{{ url('/admin/facilities/create') }}" class="btn btn-success btn-sm" title="Add New Facility">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New

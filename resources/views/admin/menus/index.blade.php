@@ -13,7 +13,7 @@
                 @endif
             <div class="col-md-12 white-box">
                 <div class="card">
-                    <h2 class="m-b-0">List of Available Food and Drinks</h2><hr />
+                    <h2>List of Available Food and Drinks</h2><hr />
                     <div class="card-body">
                         <a href="{{ url('/admin/menus/create') }}" class="btn btn-success btn-sm" title="Add New Menu">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New Food or Drink
@@ -40,7 +40,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Menu type</th>
+                                        <th>Food & Drink Category</th>
                                         <th>Price</th>
                                         <th>Added By</th>
                                         <th>Date Added</th>

@@ -4,11 +4,11 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-md-12 white-box">
-                <div class="card">
-<h2 class="m-b-0">Create New Food & Drink Category</h2><hr >
+            <div class="col-md-12">
+                <div class="white-box">
+                    <h2>Create New Room Utility</h2>
                     <div class="card-body">
-                        <a href="{{ url('/admin/menutypes') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/admin/room-utilities') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
 
@@ -20,9 +20,9 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['url' => '/admin/menutypes', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['url' => '/admin/room-utilities', 'class' => 'form-horizontal', 'files' => true]) !!}
 
-                        @include ('admin.menutypes.form')
+                        @include ('admin.room-utilities.form')
 
                         {!! Form::close() !!}
 

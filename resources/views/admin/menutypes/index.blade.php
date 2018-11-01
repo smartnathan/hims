@@ -12,9 +12,9 @@
                     @endsection
                 @endif
 <div class="col-md-12 white-box">
-<h2 class="m-b-0">Menu Category</h2><hr />
-    <a href="{{ url('/admin/menutypes/create') }}" class="btn btn-success btn-sm" title="Add New Menutype">
-        <i class="fa fa-plus" aria-hidden="true"></i> Add a New Menu Category
+<h2 class="m-b-0">Food & Drink Category</h2><hr />
+    <a href="{{ url('/admin/menutypes/create') }}" class="btn btn-success btn-sm" title="Add New Food & Drink Category">
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Food & Drink Category
     </a>
 
     {!! Form::open(['method' => 'GET', 'url' => '/admin/menutypes', 'class' => 'form-inline my-2 my-lg-0 float-right'])  !!}

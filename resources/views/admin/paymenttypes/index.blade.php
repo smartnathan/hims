@@ -13,7 +13,7 @@
                 @endif
             <div class="col-md-12 white-box">
                 <div class="card">
-<h3 class="box-title m-b-0">Payment Types</h3>
+<h2 class="box-title m-b-0">Payment Types</h2><hr />
                     <div class="card-body">
                         <a href="{{ url('/admin/paymenttypes/create') }}" class="btn btn-success btn-sm" title="Add New Paymenttype">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New

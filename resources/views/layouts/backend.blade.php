@@ -84,20 +84,20 @@
 
 <li><a href="{{ url("/admin/rooms") }}">{{ __('Rooms') }}</a></li>
 <li><a href="{{ url("/admin/roomtypes") }}">{{ __('Room Category') }}</a></li>
-<li><a href="{{ url("/admin/facilities") }}">{{ __('Room Facilities') }}</a></li>
+<li><a href="{{ url("/admin/room-utilities") }}">{{ __('Room Utilities') }}</a></li>
 </ul>
 </li>
 
 
 <li class="one-column">
-<a class="active waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="fa fa-cutlery"></i> <span class="hide-menu"> Manage Menus</span></a>
+<a class="active waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="fa fa-cutlery"></i> <span class="hide-menu"> Manage Food & Drinks</span></a>
 <ul aria-expanded="false" class="collapse">
 
 <li><a href="{{ url("/admin/menus") }}">{{ __('Food & Drink') }}</a></li>
-<li><a href="{{ url("/admin/menutypes") }}">{{ __('Food & Drink Categories') }}</a></li>
+<li><a href="{{ url("/admin/menutypes") }}">{{ __('Food & Drink Category') }}</a></li>
 <li><a href="{{ url("/admin/menuorders") }}">{{ __('Food & Drink Orders') }}</a></li>
-<li><a href="{{ url("/admin/services") }}">{{ __('Extra Services') }}</a></li>
-<li><a href="{{ url("/admin/serviceorders") }}">{{ __('Services Order') }}</a></li>
+{{-- <li><a href="{{ url("/admin/services") }}">{{ __('Extra Services') }}</a></li>
+<li><a href="{{ url("/admin/serviceorders") }}">{{ __('Services Order') }}</a></li> --}}
 </ul>
 </li>
 

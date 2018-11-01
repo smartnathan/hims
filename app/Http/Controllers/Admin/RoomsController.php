@@ -6,6 +6,7 @@ use App\Facility;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Room;
+use App\RoomUtility;
 use App\Roomtype;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,9 @@ class RoomsController extends Controller
         $roomtypes = Roomtype::select('id', 'name')->get();
         $roomtypes = $roomtypes->pluck('name', 'id');
         $roomtypes->prepend('--Select--', '');
-        return view('admin.rooms.create', compact('roomtypes'));
+        $room_utilities = RoomUtility::select('id', 'name')->get()
+        ->pluck('name', 'id');
+        return view('admin.rooms.create', compact('room_utilities','roomtypes'));
     }
 
     /**
@@ -70,18 +73,23 @@ class RoomsController extends Controller
 		]);
         $requestData = $request->all();
         $requestData['added_by'] = Auth::user()->id;
-        $fname = $requestData['fname'];
         $room = Room::create($requestData);
-        $x = 0;
-        foreach ($fname as $name) {
-            $room_facility = new Facility();
-            $room_facility->room_id = $room->id;
-            $room_facility->name = $name;
-            $room_facility->company_tag = $requestData['fcompany_tag'][$x];
-            $room_facility->description = $requestData['fdescription'][$x];
-            $room_facility->save();
-            $x++;
+        if ($request->has('utilities')) {
+            foreach ($request->utilities as $item) {
+                $room->utilities()->attach($item);
+            }
         }
+        //Old Code for adding room facilities
+        // $x = 0;
+        // foreach ($fname as $name) {
+        //     $room_facility = new Facility();
+        //     $room_facility->room_id = $room->id;
+        //     $room_facility->name = $name;
+        //     $room_facility->company_tag = $requestData['fcompany_tag'][$x];
+        //     $room_facility->description = $requestData['fdescription'][$x];
+        //     $room_facility->save();
+        //     $x++;
+        // }
         return redirect('admin/rooms')->with('flash_message', 'Room added!');
     }
 
@@ -112,7 +120,9 @@ class RoomsController extends Controller
         $roomtypes = Roomtype::select('id', 'name')->get();
         $roomtypes = $roomtypes->pluck('name', 'id');
         $roomtypes->prepend('--Select--', '');
-        return view('admin.rooms.edit', compact('room', 'roomtypes'));
+        $room_utilities = RoomUtility::select('id', 'name')->get()
+        ->pluck('name', 'id');
+        return view('admin.rooms.edit', compact('room_utilities', 'room', 'roomtypes'));
     }
 
     /**
@@ -135,6 +145,12 @@ class RoomsController extends Controller
 
         $room = Room::findOrFail($id);
         $room->update($requestData);
+        $room->utilities()->detach();
+        if ($request->has('utilities')) {
+            foreach ($request->utilities as $item) {
+                $room->utilities()->attach($item);
+            }
+        }
 
         return redirect('admin/rooms')->with('flash_message', 'Room updated!');
     }

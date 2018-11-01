@@ -39,8 +39,8 @@
 <!--/span-->
 <div class="col-md-4">
 <div class="form-group {{ $errors->has('othername') ? ' has-error' : ''}}">
-    <label class="control-label">Other Name <span class="text-danger">*</span></label>
-    {!! Form::text('othername', null, ['class' => 'form-control', 'required' => 'required']) !!}
+    <label class="control-label">Other Name </label>
+    {!! Form::text('othername', null, ['class' => 'form-control']) !!}
     {!! $errors->first('othername', '<p class="help-block">:message</p>') !!}
 </div>
 </div>
@@ -125,7 +125,7 @@
 <div class="row">
 <div class="col-md-6">
     <div class="form-group{{ $errors->has('state_id') ? ' has-error' : ''}}">
-    {!! Form::label('state', 'State: ') !!}
+    <label for="state_id">State <span class="text-danger">*</span></label>
     {!! Form::select('state_id', $states, isset($user) ? $user->lga->state->id : '', ['id' => 'state', 'class' => 'form-control select2', 'required' => 'required']) !!}
 </div>
 </div>
@@ -202,8 +202,8 @@
 <!--/span-->
 <div class="col-md-4">
 <div class="form-group {{ $errors->has('othername') ? ' has-error' : ''}}">
-    <label class="control-label">Other Name <span class="text-danger">*</span></label>
-    {!! Form::text('othername', null, ['class' => 'form-control', 'required' => 'required']) !!}
+    <label class="control-label">Other Name </span></label>
+    {!! Form::text('othername', null, ['class' => 'form-control']) !!}
     {!! $errors->first('othername', '<p class="help-block">:message</p>') !!}
 </div>
 </div>
@@ -236,10 +236,10 @@
 <div class="row">
 <div class="col-md-6">
 
-<div class="form-group {{ $errors->has('username') ? ' has-error' : ''}}">
-    <label class="control-label">Username <span class="text-danger">*</span></label>
-    {!! Form::text('username', null, ['class' => 'form-control', 'required' => 'required']) !!}
-    {!! $errors->first('username', '<p class="help-block">:message</p>') !!}
+<div class="form-group {{ $errors->has('email') ? ' has-error' : ''}}">
+    <label class="control-label">Email address <span class="text-danger">*</span></label>
+    {!! Form::email('email', null, ['class' => 'form-control']) !!}
+    {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
 </div>
 </div>
 <div class="col-md-6">
@@ -264,35 +264,18 @@
 </div>
 </div>
 <div class="col-md-6">
-<div class="form-group {{ $errors->has('email') ? ' has-error' : ''}}">
-    <label class="control-label">Email address</label>
-    {!! Form::email('email', null, ['class' => 'form-control']) !!}
-    {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-md-6">
 <div class="form-group {{ $errors->has('address') ? ' has-error' : ''}}">
     <label class="control-label">Contact address <span class="text-danger">*</span></label>
     {!! Form::text('address', null, ['class' => 'form-control', 'required' => 'required']) !!}
     {!! $errors->first('address', '<p class="help-block">:message</p>') !!}
 </div>
 </div>
-<!--/span-->
-<div class="col-md-6">
-<div class="form-group{{ $errors->has('roles') ? ' has-error' : ''}}">
-<label for="roles">Roles <span class="text-danger">*</span></label>
-{!! Form::select('roles[]', $roles, isset($user_roles) ? $user_roles : [], ['multiple' => true, 'class' => "select2", 'required'=> "required"]) !!}
 </div>
-</div>
-<!--/span-->
-</div>
-<!--/row-->
+
 <div class="row">
 <div class="col-md-6">
     <div class="form-group{{ $errors->has('state_id') ? ' has-error' : ''}}">
-    {!! Form::label('state', 'State: ') !!}
+    <label for="state_id">State <span class="text-danger">*</span></label>
     {!! Form::select('state_id', $states, isset($user) ? $user->lga->state->id : '', ['id' => 'state', 'class' => 'form-control', 'required' => 'required']) !!}
 </div>
 </div>
@@ -313,10 +296,29 @@
 <!--/span-->
 </div>
 </div>
-<div class="form-actions">
-{!! Form::submit(isset($submitButtonText) ? $submitButtonText : "Create", ['class' => 'btn btn-success']) !!}
-<a class="btn btn-default" href="{{ url('/admin/users')}}">Cancel</a>
+<div class="row">
+<div class="col-md-6">
+<div class="form-group{{ $errors->has('roles') ? ' has-error' : ''}}">
+<label for="roles">Roles <span class="text-danger">*</span></label>
+{!! Form::select('roles[]', $roles, isset($user_roles) ? $user_roles : [], ['multiple' => true, 'class' => "select2", 'required'=> "required"]) !!}
 </div>
+</div>
+
+<div style="margin-top: 27px">
+<div class="col-md-3">
+
+<div class="form-group">
+{!! Form::submit(isset($submitButtonText) ? $submitButtonText : "Create", ['class' => 'btn btn-success']) !!}
+<a style="margin-left: 5px" class="btn btn-default" href="{{ url('/admin/users')}}">Cancel</a>
+
+</div>
+
+</div>
+<!--/span-->
+</div>
+</div>
+<!--/row-->
+
 </form>
 </div>
 </div>

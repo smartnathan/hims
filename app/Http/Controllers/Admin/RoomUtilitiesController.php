@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
-use App\Menu;
-use App\Menutype;
+use App\RoomUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MenusController extends Controller
+class RoomUtilitiesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,22 +17,18 @@ class MenusController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('view-all-menu');
         $keyword = $request->get('search');
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $menus = Menu::where('menutype_id', 'LIKE', "%$keyword%")
-                ->orWhere('name', 'LIKE', "%$keyword%")
-                ->orWhere('price', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
+            $roomutilities = RoomUtility::where('name', 'LIKE', "%$keyword%")
                 ->orWhere('added_by', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
         } else {
-            $menus = Menu::latest()->paginate($perPage);
+            $roomutilities = RoomUtility::latest()->paginate($perPage);
         }
 
-        return view('admin.menus.index', compact('menus'));
+        return view('admin.room-utilities.index', compact('roomutilities'));
     }
 
     /**
@@ -43,11 +38,7 @@ class MenusController extends Controller
      */
     public function create()
     {
-        $this->authorize('create-menu');
-        $menutype_id = Menutype::select('id', 'name')->get();
-        $menutype_id = $menutype_id->pluck('name', 'id');
-        $menutype_id->prepend('--Select--', '');
-        return view('admin.menus.create', compact('menutype_id'));
+        return view('admin.room-utilities.create');
     }
 
     /**
@@ -59,18 +50,14 @@ class MenusController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create-menu');
         $this->validate($request, [
 			'name' => 'required',
-			'price' => 'required',
-			'description' => 'required'
 		]);
         $requestData = $request->all();
         $requestData['added_by'] = Auth::user()->id;
+        RoomUtility::create($requestData);
 
-        Menu::create($requestData);
-
-        return redirect('admin/menus')->with('flash_message', 'Food and drink item was added!');
+        return redirect('admin/room-utilities')->with('flash_message', 'Room Utility was successfully added!');
     }
 
     /**
@@ -82,10 +69,9 @@ class MenusController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('view-menu');
-        $menu = Menu::findOrFail($id);
+        $roomutility = RoomUtility::findOrFail($id);
 
-        return view('admin.menus.show', compact('menu'));
+        return view('admin.room-utilities.show', compact('roomutility'));
     }
 
     /**
@@ -97,12 +83,9 @@ class MenusController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('update-menu');
-        $menu = Menu::findOrFail($id);
-        $menutype_id = Menutype::select('id', 'name')->get();
-        $menutype_id = $menutype_id->pluck('name', 'id');
-        $menutype_id->prepend('--Select--', '');
-        return view('admin.menus.edit', compact('menu', 'menutype_id'));
+        $roomutility = RoomUtility::findOrFail($id);
+
+        return view('admin.room-utilities.edit', compact('roomutility'));
     }
 
     /**
@@ -115,18 +98,15 @@ class MenusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('update-menu');
         $this->validate($request, [
 			'name' => 'required',
-			'price' => 'required',
-			'description' => 'required'
 		]);
         $requestData = $request->all();
 
-        $menu = Menu::findOrFail($id);
-        $menu->update($requestData);
+        $roomutility = RoomUtility::findOrFail($id);
+        $roomutility->update($requestData);
 
-        return redirect('admin/menus')->with('flash_message', 'Food and Drink item was updated!');
+        return redirect('admin/room-utilities')->with('flash_message', 'Room Utility was successfully updated!');
     }
 
     /**
@@ -138,9 +118,8 @@ class MenusController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete-menu');
-        Menu::destroy($id);
+        RoomUtility::destroy($id);
 
-        return redirect('admin/menus')->with('flash_message', 'Food and Drink item was deleted!');
+        return redirect('admin/room-utilities')->with('flash_message', 'RoomUtility deleted!');
     }
 }

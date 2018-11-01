@@ -17,6 +17,8 @@ class MenutypesController extends Controller
      */
     public function index(Request $request)
     {
+    $this->authorize('view-all-menutype');
+
         $keyword = $request->get('search');
         $perPage = 25;
 
@@ -39,6 +41,7 @@ class MenutypesController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-menutype');
         return view('admin.menutypes.create');
     }
 
@@ -51,6 +54,7 @@ class MenutypesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-menutype');
         $this->validate($request, [
 			'name' => 'required',
 			'description' => 'required'
@@ -59,7 +63,7 @@ class MenutypesController extends Controller
         $requestData['added_by'] = Auth::user()->id;
         Menutype::create($requestData);
 
-        return redirect('admin/menutypes')->with('flash_message', 'Menu category has been successfully added!');
+        return redirect('admin/menutypes')->with('flash_message', 'Food and Drink category has been successfully added!');
     }
 
     /**
@@ -71,6 +75,7 @@ class MenutypesController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view-menutype');
         $menutype = Menutype::findOrFail($id);
 
         return view('admin.menutypes.show', compact('menutype'));
@@ -85,6 +90,7 @@ class MenutypesController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-menutype');
         $menutype = Menutype::findOrFail($id);
 
         return view('admin.menutypes.edit', compact('menutype'));
@@ -100,6 +106,7 @@ class MenutypesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-menutype');
         $this->validate($request, [
 			'name' => 'required',
 			'description' => 'required'
@@ -109,7 +116,7 @@ class MenutypesController extends Controller
         $menutype = Menutype::findOrFail($id);
         $menutype->update($requestData);
 
-        return redirect('admin/menutypes')->with('flash_message', 'Menu category has been successfully updated!');
+        return redirect('admin/menutypes')->with('flash_message', 'Food and Drink category has been successfully updated!');
     }
 
     /**
@@ -121,8 +128,9 @@ class MenutypesController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-menutype');
         Menutype::destroy($id);
 
-        return redirect('admin/menutypes')->with('flash_message', 'Menu category has been successfully deleted!');
+        return redirect('admin/menutypes')->with('flash_message', 'Food and Drink category has been successfully deleted!');
     }
 }

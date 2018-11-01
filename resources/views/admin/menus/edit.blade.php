@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12 white-box">
                 <div class="card">
-<h2 class="m-b-0">Edit Menu #{{ $menu->id }}</h2><hr >
+<h2 class="m-b-0">Edit Food & Drink #{{ $menu->id }}</h2><hr >
                     <div class="card-body">
                         <a href="{{ url('/admin/menus') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

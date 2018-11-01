@@ -40,8 +40,10 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Guest Name </th>
-                    <th>Date of Order Placement</th>
+                    <th>Food/Drink</th>
+                    <th>Quantity</th>
+                    <th>Guest</th>
+                    <th>Date</th>
                     <th>Payment</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -51,8 +53,8 @@
             @foreach($menuorders->unique('user_id') as $item)
                 <tr>
                     <td>{{ $loop->iteration or $item->id }}</td>
-                    <td>{{ $item->user->surname }} {{ $item->user->firstname }}</td>
-                    <td>{{ date('m-d-Y h:i:s A', strtotime($item->created_at)) }} <label class="label label-success">{{ $item->created_at->diffForHumans() }}</label></td>
+                    <td>{{ $item->menu->name }}</td><td>{{ $item->quantity }}</td><td>{{ $item->user->surname }} {{ $item->user->firstname }}</td>
+                    <td>{{ date('m-d-Y h:i:s A', strtotime($item->created_at)) }}</td>
                     <td>
                             @if ($item->paid == 1)
                             <span class="label label-success">paid</span>
@@ -71,12 +73,12 @@
                     <td>
 
                         @can('view-menuorder')
-                        <a href="{{ url('/admin/menuorders/' . $item->user_id) }}" title="View Menuorder"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                        <a href="{{ url('/admin/menuorders/' . $item->id) }}" title="View Menuorder"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                         @endcan
-                        {{-- @can('update-menuorder')
+                        @can('update-menuorder')
                         <a href="{{ url('/admin/menuorders/' . $item->id . '/edit') }}" title="Edit Menuorder"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
-                        @endcan --}}
-                        {{-- @can('delete-menuorder')
+                        @endcan
+                        @can('delete-menuorder')
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['/admin/menuorders', $item->id],
@@ -89,7 +91,7 @@
                                     'onclick'=>'return confirm("Confirm delete?")'
                             )) !!}
                         {!! Form::close() !!}
-                        @endcan --}}
+                        @endcan
                     </td>
                 </tr>
             @endforeach

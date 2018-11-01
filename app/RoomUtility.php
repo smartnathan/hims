@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Room extends Model
+class RoomUtility extends Model
 {
     use SoftDeletes;
     /**
@@ -13,7 +13,7 @@ class Room extends Model
      *
      * @var string
      */
-    protected $table = 'rooms';
+    protected $table = 'room_utilities';
 
     /**
     * The database primary key value.
@@ -27,15 +27,15 @@ class Room extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'roomtype_id', 'description', 'room_number', 'price', 'is_booked', 'added_by', 'date_booked'];
+    protected $fillable = ['name', 'added_by'];
 
-    public function roomtype()
+    public function rooms()
     {
-        return $this->belongsTo(Roomtype::class);
+        return $this->belongsToMany(Rooms::class)->withTimeStamps();
     }
 
-    public function utilities()
+    public function user()
     {
-        return $this->belongsToMany(RoomUtility::class)->withTimeStamps();
+        return $this->belongsTo(User::class, 'added_by');
     }
 }

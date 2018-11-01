@@ -3,7 +3,7 @@
 @section('content')
             <div class="col-md-12 white-box">
                 <div class="card">
-                    <h2>Complete Booking history</h2><hr >
+                    <h2>Check-in Guests & Rooms Summary</h2><hr >
                     <div class="card-body">
                 @if (Session::has('flash_message'))
 
@@ -13,6 +13,7 @@
                                 </script>
                     @endsection
                 @endif
+
 
                         {{-- <a href="{{ url('/admin/bookings/create') }}" class="btn btn-success btn-sm" title="Add New Booking">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -43,7 +44,7 @@
                                         <th>Arrival Date</th>
                                         <th>Departure Date</th>
                                         <th>Duration</th>
-                                        <th>Actions</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,24 +68,7 @@
 
                                             @can('view-booking')
                                             {{-- <a href="{{ url('/admin/bookings/' . $item->id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a> --}}
-                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            @endcan
-                                            @can('update-booking')
-                                            <a href="{{ url('/admin/bookings/' . $item->id . '/edit') }}" title="Edit Booking"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
-                                            @endcan
-                                            @can('delete-booking')
-                                            {!! Form::open([
-                                                'method'=>'DELETE',
-                                                'url' => ['/admin/bookings', $item->id],
-                                                'style' => 'display:inline'
-                                            ]) !!}
-                                                {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
-                                                        'type' => 'submit',
-                                                        'class' => 'btn btn-danger btn-sm',
-                                                        'title' => 'Delete Booking',
-                                                        'onclick'=>'return confirm("Confirm delete?")'
-                                                )) !!}
-                                            {!! Form::close() !!}
+                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-info btn-sm"><i class="fa fa-arrow-right" aria-hidden="true"></i> Transfer</button></a>
                                             @endcan
                                         </td>
                                     </tr>

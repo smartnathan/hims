@@ -12,7 +12,7 @@
                     @endsection
                 @endif
                     <div class="col-md-12 white-box">
-                            <h3 class="box-title m-b-0">Roles </h3>
+                            <h2>Roles </h2><hr />
                             <a href="{{ url('/admin/roles/create') }}" class="btn btn-success btn-sm" title="Add New Role">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>

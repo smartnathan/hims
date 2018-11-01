@@ -13,7 +13,7 @@
                 @endif
             <div class="col-md-12 white-box">
                 <div class="card">
-                    <h3 class="box-title m-b-0">Rooms</h3>
+                    <h2>Rooms</h2><hr />
                     <div class="card-body">
                         <a href="{{ url('/admin/rooms/create') }}" class="btn btn-success btn-sm" title="Add New Room">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New

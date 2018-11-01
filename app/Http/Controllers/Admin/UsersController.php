@@ -91,8 +91,6 @@ class UsersController extends Controller
             $this->validate($request, [
             'firstname' => 'required',
             'surname' => 'required',
-            'othername' => 'required',
-            'username' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'mobile_number' => 'required|unique:users,mobile_number',
@@ -102,6 +100,7 @@ class UsersController extends Controller
         $data = $request->except('password');
         $data['password'] = bcrypt($request->password);
         $data['added_by'] = Auth::user()->id;
+        $data['username'] = $request->email;
         $user = User::create($data);
 
         foreach ($request->roles as $role) {
@@ -114,12 +113,11 @@ class UsersController extends Controller
             $this->validate($request, [
             'firstname' => 'required',
             'surname' => 'required',
-            'othername' => 'required',
             'address' => 'required',
             'gender' => 'required',
             'state_id' => 'required',
             //'lga_id' => ''
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'mobile_number' => 'required|unique:users,mobile_number',
         ]);
         $data = $request->except('password');

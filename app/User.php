@@ -47,8 +47,13 @@ class User extends Authenticatable
     }
     public function bookings()
     {
-        return $this->hasMany(Booking::class)->orderBy('id', 'desc');
+        return $this->hasOne(Booking::class)->orderBy('id', 'desc');
     }
+
+    // public function bookings()
+    // {
+    //     return $this->hasMany(Booking::class)->orderBy('id', 'desc');
+    // }
 
     public function occupation()
     {

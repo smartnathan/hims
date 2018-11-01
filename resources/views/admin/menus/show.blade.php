@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12 white-box">
                 <div class="card">
-    <h3 class="box-title m-b-0">Menu {{ $menu->id }}</h3>
+    <h2 class="">Food & Drink </h2>
                     <div class="card-body">
 
                         <a href="{{ url('/admin/menus') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -28,10 +28,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th>ID</th><td>{{ $menu->id }}</td>
-                                    </tr>
-                                    <tr><th> Menutype Id </th><td> {{ $menu->menutype_id }} </td></tr><tr><th> Name </th><td> {{ $menu->name }} </td></tr><tr><th> Price </th><td> {{ $menu->price }} </td></tr>
+                                    <tr><th> Food & Drink Category </th><td> {{ $menu->menutype->name }} </td></tr><tr><th> Name </th><td> {{ $menu->name }} </td></tr><tr><th> Price </th><td> {{ $menu->price }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

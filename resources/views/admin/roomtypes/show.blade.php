@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12 white-box">
                 <div class="card">
-<h3 class="box-title m-b-0">Roomtype {{ $roomtype->id }}</h3>
+<h2>Room Category</h2> <hr />
                     <div class="card-body">
 
                         <a href="{{ url('/admin/roomtypes') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -28,10 +28,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th>ID</th><td>{{ $roomtype->id }}</td>
-                                    </tr>
-                                    <tr><th> Name </th><td> {{ $roomtype->name }} </td></tr><tr><th> Description </th><td> {{ $roomtype->description }} </td></tr><tr><th> Added By </th><td> {{ $roomtype->added_by }} </td></tr>
+                                    <tr><th> Name </th><td> {{ $roomtype->name }} </td></tr><tr><th> Description </th><td> {{ $roomtype->description }} </td></tr><tr><th> Added By </th><td> {{ $roomtype->user->firstname }} {{ $roomtype->user->surname }} <label class="label label-danger">{{ $roomtype->user->roles[0]->label }}</label></td></tr>
                                 </tbody>
                             </table>
                         </div>

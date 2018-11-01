@@ -34,18 +34,26 @@
     </div>
 </div>
 
-
-<div class="page-header">
-    <h2 class="text-center">Room Facilitites</h2>
+<div class="form-group{{ $errors->has('label') ? ' has-error' : ''}}">
+    {!! Form::label('label', 'Room Utilities: ', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-6">
+        {!! Form::select('utilities[]', $room_utilities, isset($room) ? $room->utilities->pluck('id') : [], ['class' => 'select2 m-b-10 select2-multiple', 'multiple' => true]) !!}
+        {!! $errors->first('label', '<p class="help-block">:message</p>') !!}
+    </div>
 </div>
 
-<style type="text/css">
+<div class="form-group">
+    <div class="text-center col-md-offset-4 col-md-4">
+        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
+    </div>
+</div>
+{{-- <style type="text/css">
     .spacer {
         margin: 10px 0 ;
     }
-</style>
+</style> --}}
 {{-- Begin facility form --}}
-<div class="room-facility  text-center">
+{{-- <div class="room-facility  text-center">
   <div class="entry form-inline">
 <div class="form-group">
     <div class="col-md-12">
@@ -71,39 +79,33 @@
     </div>
 </div>
 </div>
-</div>
+</div> --}}
 
 {{-- End facility form --}}
 
 
-<div class="form-group">
-    <div class="text-center col-md-offset-4 col-md-4" style="margin-top: 20px">
-        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
-    </div>
-</div>
-
 @section('scripts')
 <script type="text/javascript">
-    $( document ).ready(function() {
-            $(document).on('click', '.add-facility', function(e) {
-                e.preventDefault();
+    // $( document ).ready(function() {
+    //         $(document).on('click', '.add-facility', function(e) {
+    //             e.preventDefault();
 
-                var tableFields = $('.room-facility'),
-                    currentEntry = $(this).parents('.entry:first'),
-                    newEntry = $(currentEntry.clone()).appendTo(tableFields);
+    //             var tableFields = $('.room-facility'),
+    //                 currentEntry = $(this).parents('.entry:first'),
+    //                 newEntry = $(currentEntry.clone()).appendTo(tableFields);
 
-                newEntry.find('input').val('');
-                tableFields.find('.entry:not(:last) .add-facility')
-                    .removeClass('add-facility').addClass('btn-remove')
-                    .removeClass('btn-success').addClass('btn-danger')
-                    .html('<span class="fa fa-minus"></span> Remove');
-            }).on('click', '.btn-remove', function(e) {
-                $(this).parents('.entry:first').remove();
+    //             newEntry.find('input').val('');
+    //             tableFields.find('.entry:not(:last) .add-facility')
+    //                 .removeClass('add-facility').addClass('btn-remove')
+    //                 .removeClass('btn-success').addClass('btn-danger')
+    //                 .html('<span class="fa fa-minus"></span> Remove');
+    //         }).on('click', '.btn-remove', function(e) {
+    //             $(this).parents('.entry:first').remove();
 
-                e.preventDefault();
-                return false;
-            });
+    //             e.preventDefault();
+    //             return false;
+    //         });
 
-        });
+    //     });
 </script>
 @endsection

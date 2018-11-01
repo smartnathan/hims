@@ -22,7 +22,7 @@ class PermissionsController extends Controller
             $permissions = Permission::where('name', 'LIKE', "%$keyword%")->orWhere('label', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
         } else {
-            $permissions = Permission::paginate($perPage);
+            $permissions = Permission::latest()->paginate($perPage);
         }
 
         return view('admin.permissions.index', compact('permissions'));

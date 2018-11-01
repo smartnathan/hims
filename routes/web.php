@@ -24,6 +24,7 @@ Route::get('admin/users/lga', 'Admin\UsersController@lga');
 
 Route::group(['middleware' => 'auth'], function() {
 //Routes for Hotel Booking system
+Route::get('admin/bookings/room-transfer', 'Admin\\BookingsController@room_transfer');
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');
 Route::get('admin/checkout', 'Admin\\BookingsController@checkoutCreate');
 Route::get('admin/{id}/invoice', 'Admin\\BookingsController@invoice');
@@ -40,7 +41,7 @@ Route::resource('admin/menutypes', 'Admin\\MenutypesController');
 Route::resource('admin/menus', 'Admin\\MenusController');
 Route::resource('admin/roomtypes', 'Admin\\RoomtypesController');
 Route::resource('admin/rooms', 'Admin\\RoomsController');
-Route::resource('admin/facilities', 'Admin\\FacilitiesController');
+// Route::resource('admin/facilities', 'Admin\\FacilitiesController');
 Route::resource('admin/bookings', 'Admin\\BookingsController');
 Route::resource('admin/menuorders', 'Admin\\MenuordersController');
 Route::resource('admin/paymenttypes', 'Admin\\PaymenttypesController');
@@ -64,5 +65,7 @@ Route::resource('admin/item-instances', 'Admin\\ItemInstancesController');
 Route::resource('admin/items', 'Admin\\ItemsController');
 Route::resource('admin/item-uoms', 'Admin\\ItemUomsController');
 Route::resource('admin/item-images', 'Admin\\ItemImagesController');
+Route::resource('admin/room-utilities', 'Admin\\RoomUtilitiesController');
 });
+
 
