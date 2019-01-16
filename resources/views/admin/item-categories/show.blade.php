@@ -3,11 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+            <div class="col-md-12 white-box">
                 <div class="card">
-                    <div class="card-header">ItemCategory {{ $itemcategory->id }}</div>
+                    <h2 class="card-header">Item Category {{ $itemcategory->id }}</h2>
                     <div class="card-body">
 
                         <a href="{{ url('/admin/item-categories') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -30,10 +28,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th>ID</th><td>{{ $itemcategory->id }}</td>
-                                    </tr>
-                                    <tr><th> Code </th><td> {{ $itemcategory->code }} </td></tr><tr><th> Name </th><td> {{ $itemcategory->name }} </td></tr><tr><th> Added By </th><td> {{ $itemcategory->added_by }} </td></tr>
+                                    <tr><th> Code </th><td> {{ $itemcategory->code }} </td></tr><tr><th> Name </th><td> {{ $itemcategory->name }} </td></tr><tr><th> Added By </th><td>{{ $itemcategory->user->firstname }} {{ $itemcategory->user->surname }} <label class="label label-danger">{{ $itemcategory->user->roles[0]->label }}</label> </td></tr>
                                 </tbody>
                             </table>
                         </div>

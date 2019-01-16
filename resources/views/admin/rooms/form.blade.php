@@ -19,7 +19,8 @@
         {!! Form::textarea('description', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('room_number') ? 'has-error' : ''}}">
+</div>
+<div class="form-group {{ $errors->has('room_number') ? 'has-error' : ''}}">
     {!! Form::label('room_number', 'Room Number', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {!! Form::text('room_number', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
@@ -35,77 +36,56 @@
 </div>
 
 <div class="form-group{{ $errors->has('label') ? ' has-error' : ''}}">
-    {!! Form::label('label', 'Room Utilities: ', ['class' => 'col-md-4 control-label']) !!}
-    <div class="col-md-6">
-        {!! Form::select('utilities[]', $room_utilities, isset($room) ? $room->utilities->pluck('id') : [], ['class' => 'select2 m-b-10 select2-multiple', 'multiple' => true]) !!}
+     {!! Form::label('label', 'Room Utilities: ', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-3">
+        {!! Form::select('utilities[]', $room_utilities, isset($room) ? $room->utilities->pluck('id') : [], ['id'=> 'room-utilities', 'class' => 'select2 m-b-10 select2-multiple', 'multiple' => true]) !!}
         {!! $errors->first('label', '<p class="help-block">:message</p>') !!}
     </div>
+    <form id="utility-form" method="POST" action="/dashboard/room-utilities">
+            @csrf
+    <div class="col-md-2">
+       
+{!! Form::text('room_utility', null, ['id'=> 'utility-field', 'placeholder'=>'Add More utility', 'class' => 'form-control']) !!}
+<div id="succes-message" style="display:none" class="text-success">New Utility added!</div>
+    </div>
+    <div class="col-md-1">
+    <button id="add-util" class="btn btn-primary" type="button">Add</button>
+    </div>
+    </form>
 </div>
 
 <div class="form-group">
     <div class="text-center col-md-offset-4 col-md-4">
-        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Create', ['class' => 'util-btn btn btn-primary']) !!}
     </div>
 </div>
-{{-- <style type="text/css">
-    .spacer {
-        margin: 10px 0 ;
-    }
-</style> --}}
-{{-- Begin facility form --}}
-{{-- <div class="room-facility  text-center">
-  <div class="entry form-inline">
-<div class="form-group">
-    <div class="col-md-12">
-        {!! Form::text('fname[]', null, ['placeholder' => 'Facility Name', 'class' => 'form-control', 'required' => 'required']) !!}
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-md-12">
-        {!! Form::text('fcompany_tag[]', null, ['placeholder' => 'Company Tag', 'class' => 'form-control', 'required' => 'required']) !!}
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-md-12">
-        {!! Form::text('fdescription[]', null, ['placeholder' => 'Description', 'class' => 'form-control', 'required' => 'required']) !!}
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-md-12">
-        <button type="button"  class="add-facility btn btn-success"><span class="fa fa-plus"></span> Add New</button>
-    </div>
-</div>
-</div>
-</div> --}}
-
-{{-- End facility form --}}
-
 
 @section('scripts')
 <script type="text/javascript">
-    // $( document ).ready(function() {
-    //         $(document).on('click', '.add-facility', function(e) {
-    //             e.preventDefault();
+     $( document ).ready(function() {
+         $('#add-util').on('click', function (e) {
+             e.preventDefault();
+             var name = $("input[name='room_utility']");
 
-    //             var tableFields = $('.room-facility'),
-    //                 currentEntry = $(this).parents('.entry:first'),
-    //                 newEntry = $(currentEntry.clone()).appendTo(tableFields);
+             $.ajaxSetup({
+                 headers: {
+                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                 }
+             });
 
-    //             newEntry.find('input').val('');
-    //             tableFields.find('.entry:not(:last) .add-facility')
-    //                 .removeClass('add-facility').addClass('btn-remove')
-    //                 .removeClass('btn-success').addClass('btn-danger')
-    //                 .html('<span class="fa fa-minus"></span> Remove');
-    //         }).on('click', '.btn-remove', function(e) {
-    //             $(this).parents('.entry:first').remove();
+             $.ajax({
+                 url: "{{ url('admin/room-utilities') }}",
+                 method: "POST",
+                 data: {"name" : name.val()},
+                 dataType: "JSON",
+                 success: function(data){
+                     $("#room-utilities").prepend(`<option value="${data.id}">${data.name}</option>`)
+                     name.val("");
+                      $("#succes-message").fadeIn(2000);
+                      $("#succes-message").fadeOut();
+                 }
+             });
+         });
 
-    //             e.preventDefault();
-    //             return false;
-    //         });
-
-    //     });
 </script>
 @endsection

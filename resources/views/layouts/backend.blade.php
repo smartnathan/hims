@@ -11,6 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('plugins/images/favicon.png')}}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 <!-- ===== Bootstrap CSS ===== -->
 <link href="{{ asset('bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -108,6 +109,15 @@
 
 <li><a href="{{ url("/admin/bookings") }}">{{ __('Manage Bookings') }}</a></li>
 <li><a href="{{ url("/admin/paymenttypes") }}">{{ __('Payment Types') }}</a></li>
+</ul>
+</li>
+        <li class="one-column">
+<a class="active waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="fa fa-calendar"></i> <span class="hide-menu"> Reportings</span></a>
+<ul aria-expanded="false" class="collapse">
+
+<li><a href="{{ url("/admin/room-reports") }}">{{ __('Room Reports') }}</a></li>
+<li><a href="{{ url("/admin/food-drink-reports") }}">{{ __('Food & Drink Reports') }}</a></li>
+<li><a href="{{ url("/admin/general-reports") }}">{{ __('General Reports') }}</a></li>
 </ul>
 </li>
 
@@ -279,6 +289,13 @@ Required JS Files
 
 
 <script src="{{ asset('plugins/components/styleswitcher/jQuery.style.switcher.js') }}"></script>
+
+@if (Session::has('flash_message'))
+<script type="text/javascript">
+   swal('Completed!', "{{ Session::get('flash_message') }}", 'success');
+</script>
+ @endif
+
 </body>
 
 </html>

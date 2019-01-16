@@ -55,9 +55,15 @@ class RoomUtilitiesController extends Controller
 		]);
         $requestData = $request->all();
         $requestData['added_by'] = Auth::user()->id;
-        RoomUtility::create($requestData);
+        $room_utilities = RoomUtility::create($requestData);
+        if ($request->ajax()) {
+            return response()->json($room_utilities);
+        } else {
+            return redirect('admin/room-utilities')->with('flash_message', 'Room Utility was successfully added!');
 
-        return redirect('admin/room-utilities')->with('flash_message', 'Room Utility was successfully added!');
+        }
+        
+
     }
 
     /**

@@ -29,5 +29,12 @@ class ItemBrandManufacturer extends Model
      */
     protected $fillable = ['name', 'added_by'];
 
-    
+    public function user()
+        {
+            return $this->belongsTo(User::class, 'added_by');
+        }
+    public function itemBrands()
+    {
+        return $this->hasMany(ItemBrand::class);
+    }
 }

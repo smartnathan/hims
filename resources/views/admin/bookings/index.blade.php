@@ -5,19 +5,21 @@
                 <div class="card">
                     <h2>Complete Booking history</h2><hr >
                     <div class="card-body">
-                @if (Session::has('flash_message'))
-
-                    @section('scripts')
-                                <script type="text/javascript">
-                                   swal('Completed!', "{{ Session::get('flash_message') }}", 'success');
-                                </script>
-                    @endsection
-                @endif
 
                         {{-- <a href="{{ url('/admin/bookings/create') }}" class="btn btn-success btn-sm" title="Add New Booking">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
  --}}
+                        @if (Session::has('flash_message'))
+
+                        @section('scripts')
+                            <script type="text/javascript">
+                                swal('Completed!', "{{ Session::get('flash_message') }}", 'success');
+                            </script>
+                        @endsection
+                        @endif
+
+
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/bookings', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
                         <div class="text-right">
                             <div class="input-group">
@@ -70,7 +72,9 @@
                                             <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             @endcan
                                             @can('update-booking')
-                                            <a href="{{ url('/admin/bookings/' . $item->id . '/edit') }}" title="Edit Booking"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            @if ( ! $item->departure_date)
+                                                        <a href="{{ url('/admin/bookings/' . $item->id . '/edit') }}" title="Edit Booking"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Change Duration</button></a>
+                                                @endif
                                             @endcan
                                             @can('delete-booking')
                                             {!! Form::open([

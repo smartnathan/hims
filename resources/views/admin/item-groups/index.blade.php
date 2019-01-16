@@ -3,25 +3,33 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+            <div class="col-md-12 white-box">
                 <div class="card">
-                    <div class="card-header">Itemgroups</div>
+                    @if (Session::has('flash_message'))
+
+                    @section('scripts')
+                                <script type="text/javascript">
+                                   swal('Completed!', "{{ Session::get('flash_message') }}", 'success');
+                                </script>
+                    @endsection
+                @endif
+                    <h2>Item groups</h2><hr />
                     <div class="card-body">
-                        <a href="{{ url('/admin/item-groups/create') }}" class="btn btn-success btn-sm" title="Add New ItemGroup">
+                        <a href="{{ url('/admin/item-groups/create') }}" class="btn btn-success btn-sm" title="Add New Item Group">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/item-groups', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
+                        <div class="text-right">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
-                            <span class="input-group-append">
+                            <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
                         </div>
+                    </div>
                         {!! Form::close() !!}
 
                         <br/>
@@ -37,7 +45,7 @@
                                 @foreach($itemgroups as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->code }}</td><td>{{ $item->name }}</td><td>{{ $item->added_by }}</td>
+                                        <td>{{ $item->code }}</td><td>{{ $item->name }}</td><td>{{ $item->user->firstname }} {{ $item->user->surname }} <label class="label label-danger">{{ $item->user->roles[0]->label }}</label></td>
                                         <td>
                                             <a href="{{ url('/admin/item-groups/' . $item->id) }}" title="View ItemGroup"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/item-groups/' . $item->id . '/edit') }}" title="Edit ItemGroup"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

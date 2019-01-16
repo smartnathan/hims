@@ -3,25 +3,27 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
 
-            <div class="col-md-9">
+            <div class="col-md-12 white-box">
                 <div class="card">
-                    <div class="card-header">Itembrands</div>
+                    <h2 class="card-header">Item brands</h2>
+                    <hr />
                     <div class="card-body">
                         <a href="{{ url('/admin/item-brands/create') }}" class="btn btn-success btn-sm" title="Add New ItemBrand">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/item-brands', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
+                        <div class="text-right">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
-                            <span class="input-group-append">
+                            <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
                         </div>
+                    </div>
                         {!! Form::close() !!}
 
                         <br/>
@@ -30,14 +32,14 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Item Brand Manufacturer Id</th><th>Code</th><th>Name</th><th>Actions</th>
+                                        <th>#</th><th>Item Brand Manufacturer</th><th>Code</th><th>Name</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($itembrands as $item)
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->item_brand_manufacturer_id }}</td><td>{{ $item->code }}</td><td>{{ $item->name }}</td>
+                                        <td>{{ $item->itemBrandManufacturer->name }}</td><td>{{ $item->code }}</td><td>{{ $item->name }}</td>
                                         <td>
                                             <a href="{{ url('/admin/item-brands/' . $item->id) }}" title="View ItemBrand"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/item-brands/' . $item->id . '/edit') }}" title="Edit ItemBrand"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

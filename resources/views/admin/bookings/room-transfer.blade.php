@@ -19,7 +19,7 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
  --}}
-                        {!! Form::open(['method' => 'GET', 'url' => '/admin/bookings', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
+                        {!! Form::open(['method' => 'GET', 'url' => '/admin/bookings/room-transfer', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
                         <div class="text-right">
                             <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
@@ -68,7 +68,7 @@
 
                                             @can('view-booking')
                                             {{-- <a href="{{ url('/admin/bookings/' . $item->id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a> --}}
-                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-info btn-sm"><i class="fa fa-arrow-right" aria-hidden="true"></i> Transfer</button></a>
+                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-danger btn-sm"><i class="fa fa-arrow-right" aria-hidden="true"></i> Transfer</button></a>
                                             @endcan
                                         </td>
                                     </tr>

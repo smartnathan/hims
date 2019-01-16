@@ -52,7 +52,7 @@
                 <tr>
                     <td>{{ $loop->iteration or $item->id }}</td>
                     <td>{{ $item->user->surname }} {{ $item->user->firstname }}</td>
-                    <td>{{ date('m-d-Y h:i:s A', strtotime($item->created_at)) }} <label class="label label-success">{{ $item->created_at->diffForHumans() }}</label></td>
+                    <td>{{ date('l jS, F Y h:i:s A', strtotime($item->created_at)) }} <label class="label label-success">{{ $item->created_at->diffForHumans() }}</label></td>
                     <td>
                             @if ($item->paid == 1)
                             <span class="label label-success">paid</span>
@@ -62,9 +62,9 @@
                         </td>
                     <td>
                             @if ($item->status == 1)
-                            <span class="label label-success">Completed</span>
+                            <span class="label label-success">Delivered</span>
                             @else
-                            <span class="label label-danger">Pending</span>
+                            <span class="label label-danger">Waiting</span>
                             @endif
                         </td>
 

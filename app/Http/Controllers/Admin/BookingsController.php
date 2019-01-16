@@ -11,6 +11,7 @@ use App\Paymenttype;
 use App\Room;
 use App\Setting;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,10 +49,17 @@ class BookingsController extends Controller
         return view('admin.bookings.index', compact('bookings'));
     }
 
-    public function room_transfer()
+    public function room_transfer(Request $request)
     {
+        $keyword = $request->get('search');
         $perPage = 25;
-        $bookings = Booking::where('departure_date', null)->latest()->paginate($perPage);
+        if (!empty($keyword)) {
+            //Logics for search
+        } else {
+            $bookings = Booking::where('departure_date', null)->latest()->paginate($perPage);
+        }
+
+
         return view('admin.bookings.room-transfer', compact('bookings'));
     }
 
@@ -113,8 +121,9 @@ class BookingsController extends Controller
     {
         $this->authorize('update-booking');
         $booking = Booking::findOrFail($id);
+        $paymenttype = Paymenttype::all();
 
-        return view('admin.bookings.edit', compact('booking'));
+        return view('admin.bookings.edit', compact('booking', 'paymenttype'));
     }
 
 
@@ -137,23 +146,21 @@ class BookingsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function roomTransferUpdate(Request $request, $id)
     {
+
         //Room transfer logics start here
          $this->authorize('update-booking');
         if ($request->has('transfer_id') && $request->get('transfer_id') == 'trans1920') {
         $requestData = $request->all();
         $booking = Booking::findOrFail($id);
-
          //Find previous room and change status
         $room = Room::findOrFail($booking->room_id);
         $room['is_booked'] = 0;
         $room->save();
-
         //Update Guest transaction table
         //Update previous booking record
 $get_previous_booking_record = GuestTransactionHistory::where('user_id', $booking->user_id)
-->where('status', 'debit')
 ->orderByDesc('id')->first();
 $get_previous_booking_record->status = 'credit';
 $get_previous_booking_record->save();
@@ -162,6 +169,7 @@ $get_previous_booking_record->save();
         $guest_transaction = new GuestTransactionHistory;
         $guest_transaction->user_id = $booking->user_id;
         $guest_transaction->type = 'room-transfer';
+        $guest_transaction->room_id = $room_transferred_to->id;
         $guest_transaction->description = "Guest was transferred to {$room_transferred_to->name} Room";
         if ($request->paid == 1) {
     $guest_transaction->price = $room_transferred_to->price * $booking->duration;
@@ -190,6 +198,36 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
     }
 }
 
+public function update(Request $request, $id) {
+    $booking = Booking::findOrFail($id);
+        if ($booking->paid == 0) {
+            $booking->duration = $booking->duration + $request->input('duration');
+            $booking->save();
+        }
+        else {
+            //Changing departure state of guest first
+            $booking->departure_date = Carbon::now();
+            $booking->checked_out_by = Auth::id();
+            $booking->save();
+
+            //Create new instance of booking for guest
+            $new_booking = Booking::create([
+                'room_id' => $booking->room_id,
+                'arrival_date' => $booking->arrival_date,
+                'user_id' => $booking->user_id,
+                'checked_in_by' => Auth::id(),
+                'duration' => $request->input('duration'),
+                'paid' => $request->input('paid')
+            ]);
+            if ($new_booking->paid == 1){
+                $new_booking->paymenttype_id = $request->input('paymenttype');
+                $new_booking->save();
+            }
+
+        }
+    return redirect('admin/bookings')->with('flash_message', 'Room duration was successfully updated!');
+
+}
     /**
      * Remove the specified resource from storage.
      *
@@ -228,7 +266,7 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
 $user = Booking::where('user_id', $request->user_id)
 ->where('departure_date', null)->first();
 if (isset($user)) {
-    return redirect('admin/bookroom')->with('error_message', "You have already been checked into {$user->room->name} room, {$user->created_at->diffForHumans()}. You can only checkout or tranfer to a different room.");
+    return redirect('admin/bookroom')->with('error_message', "The guest has already been checked into {$user->room->name} room, {$user->created_at->diffForHumans()}. You can only checkout or tranfer to a different room.");
 } else {
     $booking = new Booking;
         $booking['room_id'] = $request->room;
@@ -247,6 +285,7 @@ if (isset($user)) {
         $guest_transaction = new GuestTransactionHistory;
         $guest_transaction->user_id = $request->user_id;
         $guest_transaction->type = 'booking';
+        $guest_transaction->room_id = $room->id;
         $guest_transaction->description = "Checked into {$room->name} Room";
         $guest_transaction->price = $room->price * $request->duration;
         if ($request->paid == 1) {
@@ -274,6 +313,7 @@ if (isset($user)) {
           $transactions = GuestTransactionHistory::where('user_id', $id)
         ->where('status', 'credit')
         ->whereDay('created_at', '=', date('d'))
+        ->take(1)
         ->get();
         } else {
         $transactions = GuestTransactionHistory::where('user_id', $id)

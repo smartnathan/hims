@@ -10,8 +10,10 @@ use App\Menu;
 use App\Menuorder;
 use App\Paymenttype;
 use App\Role;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Setting;
 
 class MenuordersController extends Controller
 {
@@ -71,6 +73,12 @@ class MenuordersController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create-menuorder');
+        //Check if the user is currently checked into the hotel
+        $verify_user = Booking::where('user_id', $request->user_id)
+        ->where('departure_date', NULL)->first();
+        if (! $verify_user) {
+            return redirect('admin/menuorders/create')->with('error_message', "Sorry! This Guest has been not been checked into any room in the hotel");
+        } else {
 
         //$requestData = $request->all();
        // Menuorder::create($requestData);
@@ -80,15 +88,18 @@ class MenuordersController extends Controller
         foreach ($menus as $menu_id) {
             $menuorder = new Menuorder;
             $menuorder->menu_id = $menu_id;
+            $menuorder->booking_id = $verify_user->id;
             $menuorder->user_id = $request->user_id;
             $menuorder->quantity = $quantity[$x];
             $menuorder->added_by = Auth::user()->id;
+            $menuorder->room_id = $verify_user->room_id;
             $menuorder->save();
 
         //End update for previous record
         $guest_transaction = new GuestTransactionHistory;
         $guest_transaction->user_id = $request->user_id;
         $guest_transaction->type = 'food&drink';
+        $guest_transaction->room_id = $verify_user->room_id;
         $guest_transaction->description = "Guest ordered for {$menuorder->menu->name}; quantity ({$menuorder->quantity})";
         $guest_transaction->price = $menuorder->menu->price * $menuorder->quantity;
         $guest_transaction->status = "debit";
@@ -98,6 +109,7 @@ class MenuordersController extends Controller
         }
         return redirect('admin/menuorders')->with('flash_message', 'Order was successfully placed!');
     }
+}
 
     /**
      * Display the specified resource.
@@ -108,14 +120,25 @@ class MenuordersController extends Controller
      */
     public function show($id)
     {
+        $total = 0;
+        $hotel_address = Setting::where('name', 'HOTEL_ADDRESS')->first()->value;
+
         $this->authorize('view-menuorder');
         //$menuorder = Menuorder::findOrFail($id);
         $booking = Booking::where('user_id', $id)
         ->where('departure_date', null)->first();
         //dd($booking);
-        $menuorder = Menuorder::where('user_id', $id)
-        ->orderByDesc('id')->get();
-        return view('admin.menuorders.show', compact('menuorder'));
+
+        if (request()->has('print') && decrypt(request()->get('print')) == $id) {
+            $transactions = Menuorder::where('user_id', $id)
+            ->where('room_id', $booking->room_id)
+            ->orderByDesc('id')->where('paid', 0)->get();
+        }
+            $menuorder = Menuorder::where('user_id', $id)
+            ->where('room_id', $booking->room_id)
+            ->orderByDesc('id')->get();
+        
+        return view('admin.menuorders.show', compact('hotel_address', 'menuorder', 'transactions', 'total'));
     }
 
     /**

@@ -45,4 +45,6 @@ class Booking extends Model
     {
         return $this->hasMany(Menuorder::class, 'user_id', 'user_id')->orderBy('id', 'desc');
     }
+    
+    
 }

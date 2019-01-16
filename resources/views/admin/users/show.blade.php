@@ -151,7 +151,7 @@
                    <p class="text-danger"><strong>Note:</strong> Room transfer can only be done within 24hours of checking-in.</p>
                </div>
                <div>
-{!! Form::open(['url' => '/admin/bookings/'.$user->bookings[0]->id, 'class' => 'form-inline', 'files' => true, 'method' => 'PATCH', 'role' => 'form']) !!}
+{!! Form::open(['url' => 'admin/room-transfer-update/'.$user->bookings[0]->id, 'class' => 'form-inline', 'files' => true, 'method' => 'PATCH', 'role' => 'form']) !!}
   <div class="form-group">
     <label for="room">Transfer to:</label>
 <select id="room" style="width: 250px" required="required" name="room_id" class="form-control select2">
@@ -169,10 +169,10 @@
 <label for="paid" class="control-labe">Paid Transfer Charges</label>
 
 <div class="radio radio-primary">
-            <input type="radio" name="paid" id="radio1" value="0">
+            <input required="" type="radio" name="paid" id="radio1" value="0">
             <label for="radio1"> No </label>
             &nbsp; &nbsp;
-            <input type="radio" name="paid" id="radio2" value="1">
+            <input required="" type="radio" name="paid" id="radio2" value="1">
             <label for="radio2"> Yes </label>
 </div>
 </div>

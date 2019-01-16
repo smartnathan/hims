@@ -5,6 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * @property mixed firstname
+ * @property mixed surname
+ * @property mixed othername
+ */
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
@@ -45,15 +50,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Lga::class);
     }
-    public function bookings()
-    {
-        return $this->hasOne(Booking::class)->orderBy('id', 'desc');
-    }
-
     // public function bookings()
     // {
-    //     return $this->hasMany(Booking::class)->orderBy('id', 'desc');
+    //     return $this->hasOne(Booking::class)->orderBy('id', 'desc');
     // }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class)->orderBy('id', 'desc');
+    }
 
     public function occupation()
     {
@@ -67,5 +72,13 @@ class User extends Authenticatable
     public function transactionHistories()
     {
         return $this->hasMany(GuestTransactionHistory::class)->orderByDesc('id');
+    }
+    public function transactionDebt()
+    {
+        return $this->hasMany(GuestTransactionHistory::class)->where('status', 'debit');
+    }
+
+    public function getFullNameAttribute(){
+        return "{$this->firstname} {$this->othername} {$this->surname}";
     }
 }

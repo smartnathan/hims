@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\ItemBrandManufacturer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemBrandManufacturersController extends Controller
 {
@@ -52,13 +52,13 @@ class ItemBrandManufacturersController extends Controller
     {
         $this->validate($request, [
 			'name' => 'required',
-			'added_by' => 'required'
 		]);
         $requestData = $request->all();
-        
+        $requestData['added_by'] = Auth::user()->id;
+
         ItemBrandManufacturer::create($requestData);
 
-        return redirect('admin/item-brand-manufacturers')->with('flash_message', 'ItemBrandManufacturer added!');
+        return redirect('admin/item-brand-manufacturers')->with('flash_message', 'Item Brand Manufacturer was successfully added!');
     }
 
     /**
@@ -101,14 +101,13 @@ class ItemBrandManufacturersController extends Controller
     {
         $this->validate($request, [
 			'name' => 'required',
-			'added_by' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $itembrandmanufacturer = ItemBrandManufacturer::findOrFail($id);
         $itembrandmanufacturer->update($requestData);
 
-        return redirect('admin/item-brand-manufacturers')->with('flash_message', 'ItemBrandManufacturer updated!');
+        return redirect('admin/item-brand-manufacturers')->with('flash_message', 'Item Brand Manufacturer was successfully updated!');
     }
 
     /**

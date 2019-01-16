@@ -29,5 +29,8 @@ class ItemBrand extends Model
      */
     protected $fillable = ['item_brand_manufacturer_id', 'code', 'name'];
 
-    
+    public function itemBrandManufacturer()
+    {
+        return $this->belongsTo(ItemBrandManufacturer::class);
+    }
 }

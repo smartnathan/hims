@@ -1,6 +1,7 @@
 <?php
 
 use App\GuestTransactionHistory;
+use App\Menuorder;
 use App\Setting;
 
 /*
@@ -24,11 +25,21 @@ Route::get('admin/users/lga', 'Admin\UsersController@lga');
 
 Route::group(['middleware' => 'auth'], function() {
 //Routes for Hotel Booking system
+
+Route::get('admin/general-reports', function (){
+    return view('admin.reports.index');
+});
+
+Route::get('admin/room-reports', 'Admin\\ReportController@roomsBooking');
+Route::get('admin/food-drink-reports', 'Admin\\ReportController@foodAndDrinksOrder');
+
 Route::get('admin/bookings/room-transfer', 'Admin\\BookingsController@room_transfer');
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');
 Route::get('admin/checkout', 'Admin\\BookingsController@checkoutCreate');
 Route::get('admin/{id}/invoice', 'Admin\\BookingsController@invoice');
 Route::get('admin/{id}/checkout', 'Admin\\BookingsController@checkout');
+
+Route::patch('admin/room-transfer-update/{id}', 'Admin\\BookingsController@roomTransferUpdate');
 Route::get('admin/bookroom', 'Admin\\BookingsController@booking');
 Route::post('admin/bookroom', 'Admin\\BookingsController@storebooking');
 Route::get('admin', 'Admin\AdminController@index');
@@ -50,6 +61,8 @@ Route::resource('admin/serviceorders', 'Admin\\ServiceordersController');
 Route::resource('admin/states', 'Admin\\StatesController');
 Route::resource('admin/lgas', 'Admin\\LgasController');
 Route::resource('admin/navigationmenus', 'Admin\\NavigationmenusController');
+Route::resource('admin/room-utilities', 'Admin\\RoomUtilitiesController');
+
 
 //Newly added routes for Inventory system
 Route::resource('admin/nationalities', 'Admin\\NationalitiesController');
@@ -65,7 +78,6 @@ Route::resource('admin/item-instances', 'Admin\\ItemInstancesController');
 Route::resource('admin/items', 'Admin\\ItemsController');
 Route::resource('admin/item-uoms', 'Admin\\ItemUomsController');
 Route::resource('admin/item-images', 'Admin\\ItemImagesController');
-Route::resource('admin/room-utilities', 'Admin\\RoomUtilitiesController');
 });
 
 

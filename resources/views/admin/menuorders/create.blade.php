@@ -5,6 +5,13 @@
         <div class="row">
             <div class="col-md-12 white-box">
                 <div class="card">
+                       @if (Session::has('error_message'))
+        @section('scripts')
+ <script type="text/javascript">
+            swal('WHOOP!', "{{ Session::get('error_message') }}", 'error');
+        </script>
+        @endsection
+@endif
     <h2 class="">Kitchen Menu Order</h2>
     <hr />
     <div class="card-body">

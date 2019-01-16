@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\ItemCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemCategoriesController extends Controller
 {
@@ -52,13 +52,14 @@ class ItemCategoriesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'code' => 'required'
+			'code' => 'required|unique:item_categories,code',
+            'name' => 'required',
 		]);
         $requestData = $request->all();
-        
+        $requestData['added_by'] = Auth::user()->id;
         ItemCategory::create($requestData);
 
-        return redirect('admin/item-categories')->with('flash_message', 'ItemCategory added!');
+        return redirect('admin/item-categories')->with('flash_message', 'Item Category was successfully added!');
     }
 
     /**
@@ -103,7 +104,7 @@ class ItemCategoriesController extends Controller
 			'code' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $itemcategory = ItemCategory::findOrFail($id);
         $itemcategory->update($requestData);
 

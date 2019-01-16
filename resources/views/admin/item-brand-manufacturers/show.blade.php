@@ -3,11 +3,11 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
 
-            <div class="col-md-9">
+
+            <div class="col-md-12 white-box">
                 <div class="card">
-                    <div class="card-header">ItemBrandManufacturer {{ $itembrandmanufacturer->id }}</div>
+                    <h2 class="card-header">Item Brand Manufacturer {{ $itembrandmanufacturer->id }}</h2><hr />
                     <div class="card-body">
 
                         <a href="{{ url('/admin/item-brand-manufacturers') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
@@ -30,10 +30,8 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th>ID</th><td>{{ $itembrandmanufacturer->id }}</td>
-                                    </tr>
-                                    <tr><th> Name </th><td> {{ $itembrandmanufacturer->name }} </td></tr><tr><th> Added By </th><td> {{ $itembrandmanufacturer->added_by }} </td></tr>
+
+                                    <tr><th> Name </th><td> {{ $itembrandmanufacturer->name }} </td></tr><tr><th> Added By </th><td> {{ $itembrandmanufacturer->user->firstname }} {{ $itembrandmanufacturer->user->surname }} <label class="label label-danger">{{ $itembrandmanufacturer->user->roles[0]->label }}</label></td></tr>
                                 </tbody>
                             </table>
                         </div>

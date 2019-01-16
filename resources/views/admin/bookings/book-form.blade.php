@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="col-lg-9 col-sm-9">
-    <div class="panel panel-primary">
+    <div class="panel panel-danger">
         <div class="panel-heading"> Book a Room
 
         </div>
@@ -100,7 +100,7 @@
                                 <div class="form-group">
                                     <label for="paid" class="col-sm-3 control-label">Paid<span class="text-danger">*</span></label>
                                     <div class="col-sm-6">
-                                <div class="radio radio-primary">
+                                <div class="radio radio-danger">
                                             <input required="" id="paid" type="radio" name="paid" id="radio1" value="0">
                                             <label for="radio1"> No </label>
                                             &nbsp; &nbsp; &nbsp; &nbsp;
@@ -126,7 +126,7 @@
                                 </div>
 <div class="form-group">
     <div class="col-sm-3 pull-right">
-    <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-sign-in"></i> Check In</button>
+    <button type="submit" class="btn btn-danger btn-lg"><i class="fa fa-sign-in"></i> Check In</button>
     </div>
 </div>
 
@@ -146,7 +146,7 @@
 
 <!-- /.col-lg-4 -->
 <div class="col-lg-3 col-sm-3">
-    <div class="panel panel-primary">
+    <div class="panel panel-danger">
         <div class="panel-heading"> Available Rooms
         </div>
         <div class="panel-wrapper collapse in" aria-expanded="true">

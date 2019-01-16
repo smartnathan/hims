@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\Item;
+use App\ItemBrand;
+use App\ItemCategory;
+use App\ItemGroup;
+use App\ItemUom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemsController extends Controller
 {
@@ -52,7 +56,15 @@ class ItemsController extends Controller
      */
     public function create()
     {
-        return view('admin.items.create');
+        $itemCategories = ItemCategory::select('id', 'name')
+        ->get()->pluck('name', 'id')->prepend('--SELECT--', '');
+        $itemBrand = ItemBrand::select('id', 'name')
+        ->get()->pluck('name', 'id')->prepend('--SELECT--', '');
+        $itemGroup = ItemGroup::select('id', 'name')->get()
+        ->pluck('name', 'id')->prepend('--SELECT--', '');
+        $itemUom = ItemUom::select('id', 'name')->get()
+        ->pluck('name', 'id')->prepend('--SELECT--', '');
+        return view('admin.items.create', compact('itemUom', 'itemGroup', 'itemCategories', 'itemBrand'));
     }
 
     /**
@@ -67,13 +79,15 @@ class ItemsController extends Controller
         $this->validate($request, [
 			'item_brand_id' => 'required',
 			'has_instances' => 'required',
-			'added_by' => 'required'
+			'is_active' => 'required',
+            'tag' => 'required',
+            'quantity' => 'required',
+            'oem' => 'required'
 		]);
         $requestData = $request->all();
-        
+        $requestData['added_by'] = Auth::user()->id;
         Item::create($requestData);
-
-        return redirect('admin/items')->with('flash_message', 'Item added!');
+        return redirect('admin/items')->with('flash_message', 'Item was successfully added!');
     }
 
     /**
@@ -120,7 +134,7 @@ class ItemsController extends Controller
 			'added_by' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $item = Item::findOrFail($id);
         $item->update($requestData);
 

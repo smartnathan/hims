@@ -1,12 +1,26 @@
 @extends('layouts.backend')
 
 @section('content')
+<style>
+.not-paid {
+    background-color: #ff1a1a;
+    color: #fff;
+    font-weight: bolder;
+}
+.not-paid-link {
+    color: #fff;
+}
+.tooltip-inner {
+    font-size: 20px;
+    font-weight: bolder;
+}
+</style>
 <div class="col-md-12 white-box">
 <div class="card">
 <h2 class="m-b-0">Guest Management & Room Checked-in</h2><hr >
 <div class="card-body">
 <div class="float-left">
-    <span><a style="font-weight: bolder;" class="btn btn-primary" href="{{ url('/admin') }}"><i class="fa fa-arrow-left"></i> Back</a></span>
+    <span><a style="font-weight: bolder;" class="btn btn-danger" href="{{ url('/admin') }}"><i class="fa fa-arrow-left"></i> Back</a></span>
 </div>
 {!! Form::open(['method' => 'GET', 'url' => '/admin/checkout', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
 <div class="text-right">
@@ -28,7 +42,7 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Room Name</th>
+            <th>Room Name or Number</th>
             <th>Guest Name</th>
             <th>Arrival Date</th>
             <th>Duration</th>
@@ -37,13 +51,13 @@
     </thead>
     <tbody>
     @foreach($bookings as $item)
-        <tr>
+        <tr class="{{ (count($item->user->transactionDebt) > 0) ? 'not-paid' : '' }}">
             <td>{{ $loop->iteration or $item->id }}</td>
-             <td>{{ $item->room->name }}</td>
-            <td><a href="#">
-                {{ $item->user->surname}} {{ $item->user->firstname}}
-            </a></td>
-            <td>{{ $item->arrival_date }}, <label style="font-weight: bolder" class="label label-primary">{{ $item->created_at->diffForHumans() }}</label></td>
+             <td>{{ $item->room->name  }} <label class="label label-secondary"><strong style="color: #fff">{{ $item->room->room_number  }}</strong></label></td>
+            <td>
+            <a  class="{{ (count($item->user->transactionDebt) > 0) ? 'not-paid-link' : '' }}" href="#" data-toggle="tooltip" data-placement="top" title="₦{{ $item->user->transactionDebt->sum('price') }}.00">{{ $item->user->surname}} {{ $item->user->firstname}}</a>
+            </td>
+            <td>{{ $item->arrival_date }} <label style="font-weight: bolder" class="label label-primary">{{ $item->created_at->diffForHumans() }}</label></td>
             <td>
                    @if ( $item->duration == 1)
                    {{ $item->duration }} day
@@ -53,11 +67,11 @@
             </td>
             <td>
 
-            @if (isset($item->user->transactionHistories))
+            @if (isset($item->user->transactionHistories) && count($item->user->transactionHistories) > 0)
 
             @foreach ($item->user->transactionHistories as $history)
             @if ( $history->status == 'debit')
-            <a href="{{ url('/admin/' . $item->user_id . '/invoice') }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
+            <a href="{{ url('/admin/' . $item->user_id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
             @break
 
             @else
@@ -76,11 +90,12 @@
         window.location.href="{{ url('admin/' . $item->user_id .'/checkout') }}";
     }, 2000);
     }
-    );' href="javascript:;" title="View Booking"><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
+    );' href="javascript:;" title="View Booking"><button style="font-weight: bolder" type="button" class="btn btn-success btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
                 @endif
             @endif
             @endforeach
-
+            @else
+            <label style="font-weight: bolder" class="label label-danger">No Record Found!</label>
             @endif
             </td>
         </tr>

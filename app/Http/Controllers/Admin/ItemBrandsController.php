@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\ItemBrand;
+use App\ItemBrandManufacturer;
 use Illuminate\Http\Request;
 
 class ItemBrandsController extends Controller
@@ -39,7 +39,9 @@ class ItemBrandsController extends Controller
      */
     public function create()
     {
-        return view('admin.item-brands.create');
+        $itembrandmanufacturers = ItemBrandManufacturer::select('id', 'name')->get()->pluck('name', 'id');
+        $itembrandmanufacturers->prepend('--SELECT--', '');
+        return view('admin.item-brands.create', compact('itembrandmanufacturers'));
     }
 
     /**
@@ -57,7 +59,7 @@ class ItemBrandsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         ItemBrand::create($requestData);
 
         return redirect('admin/item-brands')->with('flash_message', 'ItemBrand added!');
@@ -107,7 +109,7 @@ class ItemBrandsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $itembrand = ItemBrand::findOrFail($id);
         $itembrand->update($requestData);
 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\ItemSupplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemSuppliersController extends Controller
 {
@@ -53,15 +53,14 @@ class ItemSuppliersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'code' => 'required',
+			'code' => 'required|unique:item_suppliers,code',
 			'name' => 'required',
-			'added_by' => 'required'
+			'type' => 'required'
 		]);
         $requestData = $request->all();
-        
+        $requestData['added_by'] = Auth::user()->id;
         ItemSupplier::create($requestData);
-
-        return redirect('admin/item-suppliers')->with('flash_message', 'ItemSupplier added!');
+        return redirect('admin/item-suppliers')->with('flash_message', 'Item Supplier was successfully added!');
     }
 
     /**
@@ -74,7 +73,6 @@ class ItemSuppliersController extends Controller
     public function show($id)
     {
         $itemsupplier = ItemSupplier::findOrFail($id);
-
         return view('admin.item-suppliers.show', compact('itemsupplier'));
     }
 
@@ -105,10 +103,9 @@ class ItemSuppliersController extends Controller
         $this->validate($request, [
 			'code' => 'required',
 			'name' => 'required',
-			'added_by' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $itemsupplier = ItemSupplier::findOrFail($id);
         $itemsupplier->update($requestData);
 

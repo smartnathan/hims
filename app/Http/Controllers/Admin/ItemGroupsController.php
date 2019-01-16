@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests;
 use App\ItemGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemGroupsController extends Controller
 {
@@ -52,14 +52,14 @@ class ItemGroupsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'code' => 'required',
+			'code' => 'required|unique:item_groups,code',
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+        $requestData['added_by'] = Auth::user()->id;
         ItemGroup::create($requestData);
 
-        return redirect('admin/item-groups')->with('flash_message', 'ItemGroup added!');
+        return redirect('admin/item-groups')->with('flash_message', 'Item Group was successfully added!');
     }
 
     /**
@@ -105,7 +105,7 @@ class ItemGroupsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $itemgroup = ItemGroup::findOrFail($id);
         $itemgroup->update($requestData);
 

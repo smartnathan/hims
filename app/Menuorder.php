@@ -43,4 +43,7 @@ class Menuorder extends Model
     {
         return $this->belongsTo(User::class, 'added_by');
     }
+    public function booking() {
+        return $this->belongsTo(Booking::class);
+    }
 }
