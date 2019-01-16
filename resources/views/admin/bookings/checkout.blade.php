@@ -53,11 +53,11 @@
     @foreach($bookings as $item)
         <tr class="{{ (count($item->user->transactionDebt) > 0) ? 'not-paid' : '' }}">
             <td>{{ $loop->iteration or $item->id }}</td>
-             <td>{{ $item->room->name  }} <label class="label label-secondary"><strong style="color: #fff">{{ $item->room->room_number  }}</strong></label></td>
+             <td>{{ $item->room->name  }} <span class="badge badge-pill badge-secondary"><strong>{{ $item->room->room_number  }}</strong></span></td>
             <td>
             <a  class="{{ (count($item->user->transactionDebt) > 0) ? 'not-paid-link' : '' }}" href="#" data-toggle="tooltip" data-placement="top" title="₦{{ $item->user->transactionDebt->sum('price') }}.00">{{ $item->user->surname}} {{ $item->user->firstname}}</a>
             </td>
-            <td>{{ $item->arrival_date }} <label style="font-weight: bolder" class="label label-primary">{{ $item->created_at->diffForHumans() }}</label></td>
+            <td>{{ $item->arrival_date }} <span style="font-weight: bolder" class="badge badge-pill badge-secondary">{{ $item->created_at->diffForHumans() }}</span></td>
             <td>
                    @if ( $item->duration == 1)
                    {{ $item->duration }} day
@@ -71,7 +71,7 @@
 
             @foreach ($item->user->transactionHistories as $history)
             @if ( $history->status == 'debit')
-            <a href="{{ url('/admin/' . $item->user_id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
+            <a href="{{ url('/admin/' . $item->user_id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
             @break
 
             @else
@@ -90,12 +90,12 @@
         window.location.href="{{ url('admin/' . $item->user_id .'/checkout') }}";
     }, 2000);
     }
-    );' href="javascript:;" title="View Booking"><button style="font-weight: bolder" type="button" class="btn btn-success btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
+    );' href="javascript:;" title="View Booking"><button style="font-weight: bolder" type="button" class="btn btn-default btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
                 @endif
             @endif
             @endforeach
             @else
-            <label style="font-weight: bolder" class="label label-danger">No Record Found!</label>
+            <span style="font-weight: bolder" class="badge badge-pill badge-secondary">No Record Found!</span>
             @endif
             </td>
         </tr>

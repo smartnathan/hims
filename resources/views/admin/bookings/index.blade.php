@@ -69,11 +69,11 @@
 
                                             @can('view-booking')
                                             {{-- <a href="{{ url('/admin/bookings/' . $item->id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a> --}}
-                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                                            <a href="{{ url('/admin/users/' . $item->user_id) }}" title="View Booking"><button class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             @endcan
                                             @can('update-booking')
                                             @if ( ! $item->departure_date)
-                                                        <a href="{{ url('/admin/bookings/' . $item->id . '/edit') }}" title="Edit Booking"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Change Duration</button></a>
+                                                        <a href="{{ url('/admin/bookings/' . $item->id . '/edit') }}" title="Edit Booking"><button class="btn btn-danger btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Change Duration</button></a>
                                                 @endif
                                             @endcan
                                             @can('delete-booking')
