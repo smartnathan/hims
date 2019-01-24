@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
 <div class="row">
 @if (Session::has('flash_message'))
 
@@ -71,7 +71,7 @@
                     <td>
 
                         @can('view-menuorder')
-                        <a href="{{ url('/admin/menuorders/' . $item->user_id) }}" title="View Menuorder"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
+                        <a href="{{ url('/admin/menuorders/' . $item->booking_id) }}" title="View Menuorder"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                         @endcan
                         {{-- @can('update-menuorder')
                         <a href="{{ url('/admin/menuorders/' . $item->id . '/edit') }}" title="Edit Menuorder"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

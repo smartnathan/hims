@@ -30,11 +30,17 @@ Route::get('admin/general-reports', function (){
     return view('admin.reports.index');
 });
 
+Route::get('admin/rooms-status', 'Admin\\RoomsController@roomStatus');
+Route::patch('admin/rooms-update-status/{id}', 'Admin\\RoomsController@updateRoomStatus');
+
+
 Route::get('admin/room-reports', 'Admin\\ReportController@roomsBooking');
 Route::get('admin/food-drink-reports', 'Admin\\ReportController@foodAndDrinksOrder');
 
 Route::get('admin/bookings/room-transfer', 'Admin\\BookingsController@room_transfer');
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');
+Route::get('admin/{id}/update-invoice', 'Admin\\BookingsController@updateInvoice');
+Route::get('admin/{id}/generate-receipt', 'Admin\\BookingsController@receipt');
 Route::get('admin/checkout', 'Admin\\BookingsController@checkoutCreate');
 Route::get('admin/{id}/invoice', 'Admin\\BookingsController@invoice');
 Route::get('admin/{id}/checkout', 'Admin\\BookingsController@checkout');

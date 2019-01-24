@@ -65,6 +65,16 @@
 <li>
 <a class="waves-effect" href="{{ url('/admin') }}" aria-expanded="false"><i class="fa fa-home"></i> <span class="hide-menu"> Dashboard </span></a>
 </li>
+    @if(Auth::check() && Auth::user()->hasRole('receptionist'))
+
+    <li>
+        <a class="waves-effect" href="{{ url('/admin/bookings') }}" aria-expanded="false"><i class="fa fa-user"></i> <span class="hide-menu"> Update Guest Duration </span></a>
+    </li>
+
+        <li>
+            <a class="waves-effect" href="{{ url('/admin/rooms-status') }}" aria-expanded="false"><i class="fa fa-hotel"></i> <span class="hide-menu"> Rooms Status </span></a>
+        </li>
+    @endif
 
 @if(Auth::check() && Auth::user()->hasRole('admin'))
 

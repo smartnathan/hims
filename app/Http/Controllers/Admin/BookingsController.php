@@ -170,6 +170,7 @@ $get_previous_booking_record->save();
         $guest_transaction->user_id = $booking->user_id;
         $guest_transaction->type = 'room-transfer';
         $guest_transaction->room_id = $room_transferred_to->id;
+        $guest_transaction->booking_id = $booking->id;
         $guest_transaction->description = "Guest was transferred to {$room_transferred_to->name} Room";
         if ($request->paid == 1) {
     $guest_transaction->price = $room_transferred_to->price * $booking->duration;
@@ -201,8 +202,22 @@ $guest_transaction->price = ($room_transferred_to->price * $booking->duration)+$
 public function update(Request $request, $id) {
     $booking = Booking::findOrFail($id);
         if ($booking->paid == 0) {
-            $booking->duration = $booking->duration + $request->input('duration');
+            $booking->duration = $request->input('duration');
             $booking->save();
+            $guest_transaction = GuestTransactionHistory::where('booking_id', $id)->orderBy('id', 'desc')->first();
+            $guest_transaction->delete();
+
+            // Add Guest Transaction Histories
+            $guest_transaction = new GuestTransactionHistory;
+            $guest_transaction->user_id = $booking->user_id;
+            $guest_transaction->type = 'booking';
+            $guest_transaction->room_id = $booking->room_id;
+            $guest_transaction->booking_id = $booking->id;
+            $guest_transaction->description = "Checked into {$booking->room->name} Room for {$booking->duration} day(s)";
+            $guest_transaction->price = $booking->room->price * $booking->duration;
+            $guest_transaction->status = "debit";
+            $guest_transaction->save();
+
         }
         else {
             //Changing departure state of guest first
@@ -225,7 +240,7 @@ public function update(Request $request, $id) {
             }
 
         }
-    return redirect('admin/bookings')->with('flash_message', 'Room duration was successfully updated!');
+    return redirect('admin/checkout')->with('flash_message', 'Room duration was successfully updated!');
 
 }
     /**
@@ -286,7 +301,8 @@ if (isset($user)) {
         $guest_transaction->user_id = $request->user_id;
         $guest_transaction->type = 'booking';
         $guest_transaction->room_id = $room->id;
-        $guest_transaction->description = "Checked into {$room->name} Room";
+        $guest_transaction->booking_id = $booking->id;
+        $guest_transaction->description = "Checked into {$room->name} Room for {$request->duration} day(s)";
         $guest_transaction->price = $room->price * $request->duration;
         if ($request->paid == 1) {
             $guest_transaction->status = "credit";
@@ -307,6 +323,7 @@ if (isset($user)) {
     public function invoice($id)
     {
         $this->authorize('view-booking');
+        $hotel_address = Setting::where('name', 'HOTEL_ADDRESS')->first()->value;
         $total = 0;
         $user = User::find($id);
         if (request()->has('paid') && request()->get('paid') == 'completed') {
@@ -315,12 +332,15 @@ if (isset($user)) {
         ->whereDay('created_at', '=', date('d'))
         ->take(1)
         ->get();
+          $heading = "Receipt";
+
         } else {
-        $transactions = GuestTransactionHistory::where('user_id', $id)
+            $heading = "Invoice";
+            $transactions = GuestTransactionHistory::where('booking_id', $id)
         ->where('status', 'debit')->get();
         }
 
-            return view('admin.bookings.invoice', compact('transactions', 'total', 'user'));
+            return view('admin.bookings.invoice', compact('transactions', 'total', 'user', 'heading', 'hotel_address'));
     }
 
     public function checkoutCreate(Request $request)
@@ -377,6 +397,26 @@ if (isset($user)) {
         $booking->save();
 return redirect('admin/checkout');
 //->with('flash_message', 'Guest has been successfully checked out');
+    }
+
+    public function updateInvoice($id){
+        $this->authorize('update-userorder');
+        Menuorder::where('booking_id', $id)
+            ->update(['paid' => 1]);
+        Booking::where('id', $id)
+            ->update(['paid' => 1]);
+        GuestTransactionHistory::where('booking_id', $id)
+            ->update(['status' => 'credit']);
+        return redirect('admin/checkout');
+    }
+
+    public function receipt($id) {
+        $total = 0;
+        $hotel_address = Setting::where('name', 'HOTEL_ADDRESS')->first()->value;
+
+        $transactions = GuestTransactionHistory::where('booking_id', $id)
+            ->where('status', 'credit')->get();
+        return view('admin.bookings.receipt', compact('transactions', 'total', 'hotel_address'));
     }
 
 

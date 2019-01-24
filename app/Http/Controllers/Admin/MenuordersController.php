@@ -32,15 +32,11 @@ class MenuordersController extends Controller
 
         $this->authorize('view-all-menuorder', Menuorder::class);
         $keyword = $request->get('search');
-        $perPage = 25;
+        $perPage = 100;
 
         if (!empty($keyword)) {
             $menuorders = Menuorder::where('menu_id', 'LIKE', "%$keyword%")
-                ->orWhere('quantity', 'LIKE', "%$keyword%")
-                ->orWhere('user_id', 'LIKE', "%$keyword%")
                 ->orWhere('paid', 'LIKE', "%$keyword%")
-                ->orWhere('payment_type_id', 'LIKE', "%$keyword%")
-                ->orWhere('added_by', 'LIKE', "%$keyword%")
                 ->paginate($perPage);
         } else {
             $menuorders = Menuorder::latest()->paginate($perPage);
@@ -93,6 +89,7 @@ class MenuordersController extends Controller
             $menuorder->quantity = $quantity[$x];
             $menuorder->added_by = Auth::user()->id;
             $menuorder->room_id = $verify_user->room_id;
+            $menuorder->booking_id = $verify_user->id;
             $menuorder->save();
 
         //End update for previous record
@@ -103,6 +100,7 @@ class MenuordersController extends Controller
         $guest_transaction->description = "Guest ordered for {$menuorder->menu->name}; quantity ({$menuorder->quantity})";
         $guest_transaction->price = $menuorder->menu->price * $menuorder->quantity;
         $guest_transaction->status = "debit";
+        $guest_transaction->booking_id = $verify_user->id;
         $guest_transaction->save();
         //End Guest Transction table
             $x++;
@@ -125,20 +123,17 @@ class MenuordersController extends Controller
 
         $this->authorize('view-menuorder');
         //$menuorder = Menuorder::findOrFail($id);
-        $booking = Booking::where('user_id', $id)
+        $booking = Booking::where('id', $id)
         ->where('departure_date', null)->first();
-        //dd($booking);
 
         if (request()->has('print') && decrypt(request()->get('print')) == $id) {
-            $transactions = Menuorder::where('user_id', $id)
-            ->where('room_id', $booking->room_id)
-            ->orderByDesc('id')->where('paid', 0)->get();
+            $transactions = Menuorder::where('booking_id', $id)
+            ->where('paid', 0)->orderByDesc('id')->get();
         }
-            $menuorder = Menuorder::where('user_id', $id)
-            ->where('room_id', $booking->room_id)
+            $menuorder = Menuorder::where('booking_id', $booking->id)
+                ->where('status', 0)
             ->orderByDesc('id')->get();
-        
-        return view('admin.menuorders.show', compact('hotel_address', 'menuorder', 'transactions', 'total'));
+        return view('admin.menuorders.show', compact('booking','hotel_address', 'menuorder', 'transactions', 'total'));
     }
 
     /**
@@ -168,6 +163,7 @@ class MenuordersController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $this->authorize('update-menuorder');
         $menuitems = $request->menuitems;
         foreach ($menuitems as $item) {
@@ -176,7 +172,7 @@ class MenuordersController extends Controller
         }
 
         if ($request->has('itempaid')) {
-            $guest_transaction = GuestTransactionHistory::where('user_id', $id)
+            $guest_transaction = GuestTransactionHistory::where('booking_id', $id)
             ->where('type', 'food&drink')
             ->update(['status'=> 'credit']);
 
@@ -186,15 +182,15 @@ class MenuordersController extends Controller
         }
         }
 
-        return redirect('admin/menuorders/'. $id)->with('flash_message', 'Food And drink order was successfully updated!');
+        return redirect('admin/menuorders/')->with('flash_message', 'Food And drink order was successfully updated!');
     }
 
     public function updateUserOrder($id)
     {
         $this->authorize('update-userorder');
-        Menuorder::where('user_id', $id)
+        Menuorder::where('booking_id', $id)
         ->update(['paid' => 1]);
-        GuestTransactionHistory::where('user_id', $id)
+        GuestTransactionHistory::where('booking_id', $id)
         ->update(['status' => 'credit']);
         return redirect('admin/checkout');
         //->with('flash_message', 'Payment was completed successfully');

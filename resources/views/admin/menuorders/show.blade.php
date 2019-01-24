@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@if (request()->has('print') && decrypt(request()->get('print')) == $menuorder[0]->user->id )
+@if (request()->has('print') && decrypt(request()->get('print')) == $booking->id )
 @section('content')
 <!-- /.row -->
 <div class="row">
@@ -61,7 +61,7 @@
                 <td class="text-center">{{ $loop->iteration }}</td>
                 <td class="text-center"> {{ $order->menu->name}} </td>
                 <td class="text-center">{{$order->quantity }}</td>
-                <td class="text-center"> {{ $order->created_at }} </td>
+                <td class="text-center"> {{ date('d/m/Y h:i:s a', strtotime($order->created_at)) }} </td>
                 <td class="text-right"> {{ $order->menu->price }} </td>
                 <td class="text-right"> {{ $order->menu->price * $order->quantity }}.00</td>
                 @php $total += $order->menu->price * $order->quantity @endphp
@@ -115,7 +115,7 @@
     @endsection
 @else
 @section('content')
-<div class="container">
+<div class="container-fluid">
 <div class="row">
 
 @if (Session::has('flash_message'))
@@ -128,23 +128,29 @@
 @endif
     <div class="col-md-12 white-box">
         <div class="card">
-<h3 class="box-title m-b-0">Guest Name: <span class="text-danger">{{ $menuorder[0]->user->firstname }} {{ $menuorder[0]->user->surname }}</span> <span style="margin-left: 100px">Room Name:</span> <span class="text-danger">{{ $menuorder[0]->user->bookings[0]->room->name }}</span> <label class="label label-danger">{{ $menuorder[0]->user->bookings[0]->room->room_number }}</label>
-<span style="margin-left: 100px">Added By:</span> <span class="text-danger">{{ $menuorder[0]->staff->firstname }} {{ $menuorder[0]->staff->surname }}</span>
-<span style="margin-left: 30px"><a style="font-weight: bold" class="btn btn-danger" href="{{ url('admin/menuorders', ['id' => $menuorder[0]->user->id])}}?print={{encrypt($menuorder[0]->user->id)}}">Generate Invoice</a></span>
+
+<h3 class="box-title m-b-0">Guest Name: <span class="text-danger">{{ $booking->user->firstname }} {{ $booking->user->surname }}</span> <span style="margin-left: 100px">Room Name:</span> <span class="text-danger">{{ $booking->room->name }}</span> <label class="label label-danger">{{ $booking->room->room_number }}</label>
+<span style="margin-left: 100px">Added By:</span> <span class="text-danger">{{ $booking->staff->firstname }} {{ $booking->staff->surname }}</span>
+<span style="margin-left: 30px; display: {{($menuorder->count() == 0 ) ? 'none': '' }}"><a target="_blank" style="font-weight: bold" class="btn btn-danger" href="{{ url('admin/menuorders', ['id' => $booking->id])}}?print={{encrypt($booking->id)}}">Generate Invoice</a></span>
 </h3>
 <br />
             <div class="card-body">
 
-                <a href="{{ url('/admin/menuorders') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                <a href="{{ url('/admin/menuorders') }}" title="Back"><button class="btn btn-danger btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
 <br /><br />
 
 <div class="table-responsive">
     {!! Form::open([
                     'method'=>'PATCH',
-                    'url' => ['/admin/menuorders', $menuorder[0]->user_id],
+                    'url' => ['/admin/menuorders', $booking->id],
                     'style' => 'display:inline'
                 ]) !!}
                 <button type="submit" id="confirmorder" class="hidden btn btn-primary">Confirm Order Delivery</button>
+
+    @if($menuorder->count() == 0 )
+        <div class="alert alert-danger">Sorry! There is no active order for this guest.</div>
+    @else
+
 <table class="table table-borderless">
     <thead>
         <tr>
@@ -183,7 +189,7 @@
                     @if ($item->paid == 1)
                     <span class="label label-success">paid</span>
                     @else
-                    <span class="label label-danger">Not paid</span>
+                    <span class="label label-default">Not paid</span>
                     @endif
                 <input class="itempaid" type="checkbox" name="itempaid[]" value="{{$item->user_id}}">
                 </td>
@@ -216,7 +222,7 @@
     {!! Form::close() !!}
     </tbody>
 </table>
-
+@endif
 </div>
 
             </div>

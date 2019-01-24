@@ -48,7 +48,7 @@
                                                 <h5 class="box-title m-t-30">&nbsp;</h5>
 
         @if (!isset($menuorder))
-        <button style="font-weight: bold" class="btn btn-success btn-add btn-sm" type="button">
+        <button style="font-weight: bold" class="btn btn-default btn-add btn-sm" type="button">
                 <span class="fa fa-plus"></span> Add Item
         </button>
         @endif
@@ -84,7 +84,7 @@
                             </div>
 <div class="form-group">
     <div class="text-center">
-        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Place Order', ['class' => 'btn-order btn btn-success btn-lg', 'style' => 'font-weight: bold;']) !!}
+        {!! Form::submit(isset($submitButtonText) ? $submitButtonText : 'Place Order', ['class' => 'btn-order btn btn-danger', 'style' => 'font-weight: bold;']) !!}
     </div>
 </div>
 </div>

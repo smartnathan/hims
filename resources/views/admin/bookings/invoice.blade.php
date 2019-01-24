@@ -4,7 +4,7 @@
 <div class="row">
 <div class="col-md-8 col-md-offset-2">
 <div class="white-box printableArea">
-<h3><b>INVOICE</b> <span class="pull-right">#5669626</span></h3>
+<h3><b>{{strtoupper($heading)}}</b> <span class="pull-right">#5669626</span></h3>
 <hr>
 @if (Session::has('booked_message'))
 
@@ -20,9 +20,9 @@
         <address>
             <h3> &nbsp;<b class="text-danger">{{ config('app.name')}}</b></h3>
             <p class="text-muted m-l-5">
-                {{ $user->address}}
+                {{ $hotel_address }}
                 <br />
-                {{ $user->lga->name}}, {{ $user->lga->state->name}}.
+                {{--{{ $transactions[0]->booking->user->lga->name}}, {{ $transactions[0]->booking->user->lga->state->name}}.--}}
             </p>
         </address>
     </div>
@@ -30,12 +30,12 @@
         <address>
             <h3>To,</h3>
             <h4 class="font-bold">
-                {{ $user->surname}}, {{ $user->firstname}} {{ $user->othername}}
+                {{ $transactions[0]->booking->user->surname}}, {{ $transactions[0]->booking->user->firstname}} {{ $transactions[0]->booking->user->othername}}
             </h4>
             <p class="text-muted m-l-30">
-                {{ $user->address}}
+                {{ $transactions[0]->booking->user->address}}
                 <br />
-                {{ $user->lga->name}}, {{ $user->lga->state->name}}.
+                {{--{{ $transactions[0]->booking->user->lga->name}}, {{ $transactions[0]->booking->user->lga->state->name}}.--}}
             </p>
             <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> 23rd Jan 2017
                 {{ date('d F Y', time())}}
@@ -63,8 +63,8 @@
                  @foreach ($transactions as $order)
                   <tr>
                 <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{$order->type }}</td>
-                <td class="text-right"> {{ $order->description}} </td>
+                <td>@if($order->type == 'booking') {{__('Accommodation')}} @else {{__('Food and Drink')}} @endif</td>
+                <td class="text-right"> {{ $order->description }} </td>
                 <td class="text-right"> {{ $order->created_at }} </td>
                 <td class="text-right"> {{ $order->price }} </td>
                 @php $total += $order->price @endphp
@@ -131,7 +131,7 @@
     function(){
     swal('Completed!', 'Payment was successful', 'success');
     setTimeout(function(){
-        window.location.href="{{ url('admin/' . $user->id .'/updateuserorder') }}";
+        window.location.href="{{ url('admin/' . $transactions[0]->booking->id .'/update-invoice') }}";
     }, 2000);
 
     }

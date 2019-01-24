@@ -67,15 +67,9 @@
             </td>
             <td>
 
-            @if (isset($item->user->transactionHistories) && count($item->user->transactionHistories) > 0)
-
-            @foreach ($item->user->transactionHistories as $history)
-            @if ( $history->status == 'debit')
-            <a href="{{ url('/admin/' . $item->user_id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
-            @break
-
+            @if ($item->user->transactionDebt->count() > 0)
+            <a href="{{ url('/admin/' . $item->id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
             @else
-                @if ($loop->last && $history->status == 'credit')
                 <a onclick='swal({
         title: "Are you sure?",
         text: "You will not be able to reverse this process after confirmation",
@@ -90,13 +84,9 @@
         window.location.href="{{ url('admin/' . $item->user_id .'/checkout') }}";
     }, 2000);
     }
-    );' href="javascript:;" title="View Booking"><button style="font-weight: bolder" type="button" class="btn btn-default btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
+    );' href="javascript:;" title="Checkout Guest"><button style="font-weight: bolder" type="button" class="btn btn-default btn-sm"><i class="fa fa-sign-out fa-1x" aria-hidden="true"></i> Check-out</button></a>
+            <span><a target="_blank" href="{{ url('admin/'. $item->id.'/generate-receipt') }}">Print Receipt</a></span>
                 @endif
-            @endif
-            @endforeach
-            @else
-            <span style="font-weight: bolder" class="badge badge-pill badge-secondary">No Record Found!</span>
-            @endif
             </td>
         </tr>
     @endforeach

@@ -169,4 +169,25 @@ class RoomsController extends Controller
         return redirect('admin/rooms')->with('flash_message', 'Room deleted!');
     }
 
+    public function roomStatus() {
+        $booked_rooms = Room::where('is_booked', 1)->get()->count();
+        $free_rooms = Room::where('is_booked', 0)->get()->count();
+        $rooms = Room::all();
+        return view('admin.rooms.room-status', compact('rooms', 'booked_rooms','free_rooms'));
+
+    }
+
+    public function updateRoomStatus(Request $request, $id){
+
+        $room = Room::findOrFail($id);
+        $room->is_booked = 0;
+        $room->save();
+        if ($request->ajax()) {
+            return response()->json($room);
+        } else {
+            return redirect('admin/rooms-status')->with('flash_message', 'Room status was successfully updated!');
+
+        }
+    }
+
 }

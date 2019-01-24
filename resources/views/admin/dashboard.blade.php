@@ -255,7 +255,7 @@
                                         @endforeach
                                         @else
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="9">
                                                 <div class="alert alert-danger">Sorry! No room has been checked into today</div>
                                             </td>
                                         </tr>

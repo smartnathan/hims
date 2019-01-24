@@ -15,7 +15,8 @@ class CreateGuestTransactionHistoriesTable extends Migration
     {
         Schema::create('guest_transaction_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('booking_id');
             $table->string('type');
             $table->string('description');
             $table->decimal('price', 8, 2);

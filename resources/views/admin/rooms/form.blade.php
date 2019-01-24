@@ -76,16 +76,16 @@
              $.ajax({
                  url: "{{ url('admin/room-utilities') }}",
                  method: "POST",
-                 data: {"name" : name.val()},
+                 data: {"name": name.val()},
                  dataType: "JSON",
-                 success: function(data){
+                 success: function (data) {
                      $("#room-utilities").prepend(`<option value="${data.id}">${data.name}</option>`)
                      name.val("");
-                      $("#succes-message").fadeIn(2000);
-                      $("#succes-message").fadeOut();
+                     $("#succes-message").fadeIn(2000);
+                     $("#succes-message").fadeOut();
                  }
              });
          });
-
+     });
 </script>
 @endsection

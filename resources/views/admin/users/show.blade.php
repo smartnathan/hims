@@ -226,8 +226,18 @@
                         <span class="label label-danger">
                         Not Paid
                         </span>
+
                                     @endif
+
+                        <span class="text-right">@if($user->transactionDebt->count() == 0)
+                                <a class="btn" href="{{ url('admin/'.$user_booking->id.'/generate-receipt') }}">Print Receipt</a>
+                            @else
+                                <a target="_blank" class="btn" href="{{ url('admin/'.$user_booking->id.'/invoice') }}">Print Invoice</a>
+                            @endif
+                        </span>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -239,13 +249,19 @@
                     </div>
                     @endif
 
+
                 </div>
             </div>
             <div class="tab-pane" id="messages">
                 <div class="steamline">
-                    @if (isset($user->menuorders) && count($user->menuorders) > 0)
-
+                    @if (isset($user->bookings))
+                        @foreach($user->bookings as $item)
+                            @foreach($item->menuorders as $menu)
+                                <li></li>
+                            @endforeach
+                        @endforeach
                     <div class="sl-item">
+
                     </div>
 
                     @else
