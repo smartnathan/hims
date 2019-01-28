@@ -14,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $navigations = Navigationmenu::all();
-        View::share('navigations', $navigations);
+        // $navigations = Navigationmenu::all();
+        // View::share('navigations', $navigations);
     }
 
     /**

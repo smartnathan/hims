@@ -18,11 +18,11 @@ use App\Setting;
 Route::get('/', 'Auth\LoginController@showLoginForm')->name('loginPage');
 
 Auth::routes();
-Route::get('admin/users/lga', 'Admin\UsersController@lga');
 
 Route::group(['middleware' => 'auth'], function() {
 //Routes for Hotel Booking system
 
+    Route::get('admin/users/lga', 'Admin\UsersController@lga');
 Route::get('admin/rooms-status', 'Admin\\RoomsController@roomStatus');
 Route::patch('admin/rooms-update-status/{id}', 'Admin\\RoomsController@updateRoomStatus');
 
@@ -45,13 +45,11 @@ Route::get('admin', 'Admin\AdminController@index');
 Route::resource('admin/roles', 'Admin\RolesController');
 Route::resource('admin/permissions', 'Admin\PermissionsController');
 Route::resource('admin/users', 'Admin\UsersController');
-Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
-Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 Route::resource('admin/menutypes', 'Admin\\MenutypesController');
 Route::resource('admin/menus', 'Admin\\MenusController');
 Route::resource('admin/roomtypes', 'Admin\\RoomtypesController');
 Route::resource('admin/rooms', 'Admin\\RoomsController');
-// Route::resource('admin/facilities', 'Admin\\FacilitiesController');
+
 Route::resource('admin/bookings', 'Admin\\BookingsController');
 Route::resource('admin/menuorders', 'Admin\\MenuordersController');
 Route::resource('admin/paymenttypes', 'Admin\\PaymenttypesController');

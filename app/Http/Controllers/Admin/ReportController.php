@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 class ReportController extends Controller
 {
     public function roomsBooking (Request $request){
+        $this->authorize('view-booking-report');
+
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
         $total = 0;
         $query = $request->get('search');
@@ -69,6 +71,8 @@ class ReportController extends Controller
 
 
     public function foodAndDrinksOrder(Request $request){
+        $this->authorize('view-food-drink-report');
+
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
         $total = 0;
         $query = $request->get('search');
@@ -125,6 +129,8 @@ class ReportController extends Controller
     }
 
     public function generalReport(Request $request){
+        $this->authorize('view-general-report');
+
         Carbon::setWeekStartsAt(Carbon::SUNDAY);
         $total = 0;
         $query = $request->get('search');

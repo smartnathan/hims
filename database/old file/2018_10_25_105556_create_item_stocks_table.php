@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateNavigationmenusesTable extends Migration
+class CreateItemStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateNavigationmenusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('navigationmenuses', function (Blueprint $table) {
+        Schema::create('item_stocks', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
-            $table->string('name')->nullable();
-            $table->string('url')->nullable();
+            $table->integer('item_id')->nullable();
+            $table->integer('quantity_at_hand')->nullable();
             $table->integer('added_by')->nullable();
             });
     }
@@ -29,6 +29,6 @@ class CreateNavigationmenusesTable extends Migration
      */
     public function down()
     {
-        //Schema::drop('navigationmenuses');
+        Schema::drop('item_stocks');
     }
 }

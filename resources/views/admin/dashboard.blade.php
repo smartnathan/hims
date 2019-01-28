@@ -14,7 +14,7 @@
                                 {{ count($bookings_today) }}
                                 @endif
                                         <span class="pull-right"><i class="mdi mdi-account-star"></i></span></h3>
-                                    <p class="info-text font-12">Bookings Today</p>
+                                    <p class="info-text font-12">Check-in Rooms Today</p>
                                     {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
 
                         <a style="margin-right: 10px; font-weight: bolder;" class="btn btn-success btn-lg" href="{{ url('/admin/bookroom') }}"><i class="fa fa-sign-in"></i> Check-in Guest</a>
                         <a style=" margin-right: 10px; font-weight: bolder;" class="btn btn-danger btn-lg" href="{{ url('/admin/bookings/room-transfer') }}"><i class="fa fa-upload"></i> Room Transfer</a>
-                        <a style="font-weight: bolder;" class="btn btn-primary btn-lg" href="{{ url('/admin/checkout') }}"><i class="fa fa-sign-out"></i> Check-out Guest</a>
+                        <a style="font-weight: bolder;" class="btn btn-warning btn-lg" href="{{ url('/admin/checkout') }}"><i class="fa fa-sign-out"></i> Check-out Guest</a>
                     </div>
 @endif
         {{-- Recent added guest comes in here --}}
@@ -185,22 +185,10 @@
 
 
 
-<div class="col-sm-6">
-                                    <h4 class="box-title">Recently Checked-In Guest Log<span><a style="margin-left: 30px;font-weight: bolder;" class="" href="{{ url('/admin/checkout') }}"><i class="fa fa-users"></i> All Checked-in Guests</a></span></h4>
+<div class="col-sm-12">
+                                    <h2 class="box-titl text-center">Recently Checked-In Guest Log<span><a style="margin-left: 30px;font-weight: bolder;" class="" href="{{ url('/admin/checkout') }}"><i class="fa fa-users"></i> All Checked-in Guests</a></span></h2>
                                 </div>
-                                <div class="col-sm-6">
-                        @if(Auth::user()->hasRole('receptionist'))
-                                    <ul class="list-inline">
-                                        <li>
 
-                                        <a title="New Booking" href="{{ url('admin/bookroom')}}" class="btn btn-success pull-right m-t-10 font-20">+</a>
-                                        &nbsp; &nbsp;
-                                        <a title="New Guest" href="{{ url('/admin/users/create?type=guest') }}" class="btn btn-success pull-right m-t-10 font-20"><span class="fa fa-user"></span></a>
-                                        </li>
-
-                                    </ul>
-@endif
-                                </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table">
@@ -217,7 +205,6 @@
                                             <th>Checked-In By</th>
                                             <th>Date Checked-out</th>
                                             @if(Auth::user()->hasRole('receptionist'))
-                                            <th>Action</th>
                                             @endif
                                         </tr>
                                     </thead>
@@ -246,10 +233,7 @@
                                        {{ $book->departure_date }}
                                             </td>
                                             @if(Auth::user()->hasRole('receptionist'))
-                                            <td>
-            <a class="btn btn-primary" href="{{ url('/admin/checkout') }}" title="Checkout"><i class="fa fa-sign-out fa-2x"></i></a>
 
-                                            </td>
                                             @endif
                                         </tr>
                                         @endforeach

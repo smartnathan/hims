@@ -134,7 +134,7 @@
 <div class="form-group{{ $errors->has('lga') ? ' has-error' : ''}}">
     <label for="lga">LGA <span class="text-danger">*</span></label>
 
-       <select  id="lga" class="form-control select2" name="lga_id">
+       <select required="required" id="lga" class="form-control select2" name="lga_id">
            <option value=''>--Select--</option>
            @if (isset($user))
            <option selected="selected" value="{{ $user->lga->id }}">{{ $user->lga->name }}</option>

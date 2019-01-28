@@ -16,6 +16,8 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('view-role');
+
         $keyword = $request->get('search');
         $perPage = 15;
 
@@ -36,6 +38,8 @@ class RolesController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-role');
+
         $permissions = Permission::select('id', 'name', 'label')
         ->get()
         ->pluck('label', 'name');
@@ -51,6 +55,8 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-role');
+
         $this->validate($request, ['name' => 'required']);
 
         $role = Role::create($request->all());
@@ -75,6 +81,8 @@ class RolesController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view-role');
+
         $role = Role::findOrFail($id);
 
         return view('admin.roles.show', compact('role'));
@@ -89,6 +97,8 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-role');
+
         $role = Role::findOrFail($id);
         $permissions = Permission::select('id', 'name', 'label')->get()->pluck('label', 'name');
 
@@ -105,6 +115,8 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-role');
+
         $this->validate($request, ['name' => 'required']);
 
         $role = Role::findOrFail($id);
@@ -130,6 +142,8 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-role');
+
         Role::destroy($id);
 
         return redirect('admin/roles')->with('flash_message', 'Role deleted!');

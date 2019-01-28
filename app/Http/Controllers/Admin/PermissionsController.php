@@ -15,6 +15,7 @@ class PermissionsController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('view-permission');
         $keyword = $request->get('search');
         $perPage = 15;
 
@@ -35,6 +36,8 @@ class PermissionsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-permission');
+
         return view('admin.permissions.create');
     }
 
@@ -47,6 +50,8 @@ class PermissionsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-permission');
+
         $this->validate($request, ['name' => 'required']);
 
         Permission::create($request->all());
@@ -63,6 +68,8 @@ class PermissionsController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view-permission');
+
         $permission = Permission::findOrFail($id);
 
         return view('admin.permissions.show', compact('permission'));
@@ -77,6 +84,8 @@ class PermissionsController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-permission');
+
         $permission = Permission::findOrFail($id);
 
         return view('admin.permissions.edit', compact('permission'));
@@ -92,6 +101,8 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-permission');
+
         $this->validate($request, ['name' => 'required']);
 
         $permission = Permission::findOrFail($id);
@@ -109,6 +120,8 @@ class PermissionsController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-permission');
+
         Permission::destroy($id);
 
         return redirect('admin/permissions')->with('flash_message', 'Permission deleted!');

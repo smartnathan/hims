@@ -131,9 +131,9 @@
 </ul>
 </li>
 
-<li>
+{{-- <li>
 <a class="active waves-effect" href="{{ url('#') }}" aria-expanded="false"><i class="fa fa-cog"></i> <span class="hide-menu"> Settings </span></a>
-</li>
+</li> --}}
 
 @endif
 @if (Auth::user()->hasRole('chef'))

@@ -256,15 +256,17 @@
                 <div class="steamline">
                     @if (isset($user->bookings))
                         @foreach($user->bookings as $item)
+@if ($item->menuorder != null)
                             @foreach($item->menuorders as $order)
                                 @if( $order->paid == 0)
                                     <li>{{ $order->menu->name }} ({{ $order->quantity }})</li>
                                     @endif
                             @endforeach
+
                         <br />
                                 <a target="_blank" style="font-weight: bold" class="" href="{{ url('admin/menuorders', ['id' => $order->booking_id])}}?print={{encrypt($order->booking_id)}}">Print Invoice</a>
 
-
+                                @endif
                         @endforeach
                     <div class="sl-item">
 

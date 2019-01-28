@@ -20,6 +20,8 @@ class RoomsController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('view-all-room');
+
         $keyword = $request->get('search');
         $perPage = 25;
 
@@ -47,6 +49,8 @@ class RoomsController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-room');
+
         $roomtypes = Roomtype::select('id', 'name')->get();
         $roomtypes = $roomtypes->pluck('name', 'id');
         $roomtypes->prepend('--Select--', '');
@@ -64,6 +68,8 @@ class RoomsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-room');
+
         //dd($request->all());
         $this->validate($request, [
 			'name' => 'required',
@@ -102,6 +108,8 @@ class RoomsController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view-room');
+
         $room = Room::findOrFail($id);
 
         return view('admin.rooms.show', compact('room'));
@@ -116,6 +124,8 @@ class RoomsController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-room');
+
         $room = Room::findOrFail($id);
         $roomtypes = Roomtype::select('id', 'name')->get();
         $roomtypes = $roomtypes->pluck('name', 'id');
@@ -135,6 +145,8 @@ class RoomsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-room');
+
         $this->validate($request, [
 			'name' => 'required',
 			'roomtype_id' => 'required',
@@ -164,12 +176,16 @@ class RoomsController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-room');
+
         Room::destroy($id);
 
         return redirect('admin/rooms')->with('flash_message', 'Room deleted!');
     }
 
     public function roomStatus() {
+        $this->authorize('view-room');
+
         $booked_rooms = Room::where('is_booked', 1)->get()->count();
         $free_rooms = Room::where('is_booked', 0)->get()->count();
         $rooms = Room::paginate(25);
@@ -178,6 +194,7 @@ class RoomsController extends Controller
     }
 
     public function updateRoomStatus(Request $request, $id){
+        $this->authorize('view-update');
 
         $room = Room::findOrFail($id);
         $room->is_booked = 0;

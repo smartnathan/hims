@@ -68,7 +68,7 @@
             <td>
 
             @if ($item->user->transactionDebt->count() > 0)
-            <a href="{{ url('/admin/' . $item->id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
+            <a target="_blank" href="{{ url('/admin/' . $item->id . '/invoice') }}" title="View Booking"><button style="font-weight: bolder" class="btn btn-default btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View Invoice</button></a>
             @else
                 <a onclick='swal({
         title: "Are you sure?",

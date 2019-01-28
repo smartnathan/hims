@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateNavigationmenusesTable extends Migration
+class CreateServiceordersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,17 @@ class CreateNavigationmenusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('navigationmenuses', function (Blueprint $table) {
+        Schema::create('serviceorders', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->softDeletes();
-            $table->string('name')->nullable();
-            $table->string('url')->nullable();
+            $table->integer('service_id')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('user_id')->nullable();
             $table->integer('added_by')->nullable();
+            $table->boolean('paid')->nullable();
+            $table->integer('payment_type_id')->nullable();
+            $table->text('description')->nullable();
             });
     }
 
@@ -29,6 +33,6 @@ class CreateNavigationmenusesTable extends Migration
      */
     public function down()
     {
-        //Schema::drop('navigationmenuses');
+        Schema::drop('serviceorders');
     }
 }
