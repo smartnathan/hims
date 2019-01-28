@@ -63,7 +63,7 @@
                                     @foreach ($transactions as $order)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td>{{$order->type }}</td>
+                                            <td>{{ ($order->type == 'booking') ? 'Accommdation' : 'Food and Drink' }}</td>
                                             <td class="text-right"> {{ $order->description}} </td>
                                             <td class="text-right"> {{ $order->created_at }} </td>
                                             <td class="text-right"> {{ $order->price }} </td>

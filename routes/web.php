@@ -14,10 +14,7 @@ use App\Setting;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/records', function(){
-$records = Setting::where('name', 'ROOM_TRANSFER_CHARGES')->first()->value;
-dd($records);
-});
+
 Route::get('/', 'Auth\LoginController@showLoginForm')->name('loginPage');
 
 Auth::routes();
@@ -26,16 +23,12 @@ Route::get('admin/users/lga', 'Admin\UsersController@lga');
 Route::group(['middleware' => 'auth'], function() {
 //Routes for Hotel Booking system
 
-Route::get('admin/general-reports', function (){
-    return view('admin.reports.index');
-});
-
 Route::get('admin/rooms-status', 'Admin\\RoomsController@roomStatus');
 Route::patch('admin/rooms-update-status/{id}', 'Admin\\RoomsController@updateRoomStatus');
 
-
 Route::get('admin/room-reports', 'Admin\\ReportController@roomsBooking');
 Route::get('admin/food-drink-reports', 'Admin\\ReportController@foodAndDrinksOrder');
+Route::get('admin/general-reports', 'Admin\\ReportController@generalReport');
 
 Route::get('admin/bookings/room-transfer', 'Admin\\BookingsController@room_transfer');
 Route::get('admin/{id}/updateuserorder', 'Admin\\MenuordersController@updateUserOrder');

@@ -8,7 +8,7 @@
                         <div class="media-body">
                             <h3 class="info-count">
                                 {{$booked_rooms}}
-                                <span class="pull-right"><i class="mdi mdi-account-star"></i></span></h3>
+                                <span class="pull-right"><i class="mdi mdi-hotel"></i></span></h3>
                             <p class="info-text font-12">Occupied Rooms</p>
                             {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                         </div>
@@ -21,7 +21,7 @@
                         <div class="media-body">
                             <h3 class="info-count">
                             {{$free_rooms}}
-                                <span class="pull-right"><i class="mdi mdi-home"></i></span></h3>
+                                <span class="pull-right"><i class="mdi mdi-hotel"></i></span></h3>
                             <p class="info-text font-12">Available Rooms</p>
                             {{-- <p class="info-ot font-15">Today's Date<span class="label label-rounded">{{ date('F d, Y') }}</span></p> --}}
                         </div>
@@ -54,6 +54,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration or $item->id }}</td>
                                         <td>{{ $item->name }}</td><td>{{ $item->roomtype->name }}</td><td>{{ $item->description }}</td>
+
                                         </td><td>₦{{ $item->price }}</td>
                                         <td>{{ $item->updated_at->diffForHumans()}}</td>
                                         <td>@if($item->is_booked == 0) <span class="label label-success">Available</span> @else <span class="label label-danger">Occupied</span> @endif</td>
@@ -71,7 +72,7 @@
                                 </tbody>
                             </table>
                         </div>
-
+{{ $rooms->links() }}
                     </div>
                 </div>
             </div>

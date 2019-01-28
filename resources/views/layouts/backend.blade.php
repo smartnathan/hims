@@ -76,7 +76,7 @@
         </li>
     @endif
 
-@if(Auth::check() && Auth::user()->hasRole('admin'))
+@if(Auth::check() && Auth::user()->hasRole(['admin', 'manager']))
 
 <li class="one-column">
 <a class="active waves-effect" href="javascript:void(0);" aria-expanded="false"><i class="fa fa-users"></i> <span class="hide-menu"> Manage Users</span></a>

@@ -131,7 +131,8 @@
 
 <h3 class="box-title m-b-0">Guest Name: <span class="text-danger">{{ $booking->user->firstname }} {{ $booking->user->surname }}</span> <span style="margin-left: 100px">Room Name:</span> <span class="text-danger">{{ $booking->room->name }}</span> <label class="label label-danger">{{ $booking->room->room_number }}</label>
 <span style="margin-left: 100px">Added By:</span> <span class="text-danger">{{ $booking->staff->firstname }} {{ $booking->staff->surname }}</span>
-<span style="margin-left: 30px; display: {{($menuorder->count() == 0 ) ? 'none': '' }}"><a target="_blank" style="font-weight: bold" class="btn btn-danger" href="{{ url('admin/menuorders', ['id' => $booking->id])}}?print={{encrypt($booking->id)}}">Generate Invoice</a></span>
+<span style="margin-left: 30px; display: {{($menuorder->count() == 0 ) ? 'none': '' }}">
+    <a target="_blank" style="font-weight: bold" class="btn btn-danger" href="{{ url('admin/menuorders', ['id' => $booking->id])}}?print={{encrypt($booking->id)}}">Generate Invoice</a></span>
 </h3>
 <br />
             <div class="card-body">

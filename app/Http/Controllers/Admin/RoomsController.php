@@ -172,7 +172,7 @@ class RoomsController extends Controller
     public function roomStatus() {
         $booked_rooms = Room::where('is_booked', 1)->get()->count();
         $free_rooms = Room::where('is_booked', 0)->get()->count();
-        $rooms = Room::all();
+        $rooms = Room::paginate(25);
         return view('admin.rooms.room-status', compact('rooms', 'booked_rooms','free_rooms'));
 
     }

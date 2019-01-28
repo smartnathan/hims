@@ -230,7 +230,7 @@
                                     @endif
 
                         <span class="text-right">@if($user->transactionDebt->count() == 0)
-                                <a class="btn" href="{{ url('admin/'.$user_booking->id.'/generate-receipt') }}">Print Receipt</a>
+                                <a target="_blank" class="btn" href="{{ url('admin/'.$user_booking->id.'/generate-receipt') }}">Print Receipt</a>
                             @else
                                 <a target="_blank" class="btn" href="{{ url('admin/'.$user_booking->id.'/invoice') }}">Print Invoice</a>
                             @endif
@@ -256,9 +256,15 @@
                 <div class="steamline">
                     @if (isset($user->bookings))
                         @foreach($user->bookings as $item)
-                            @foreach($item->menuorders as $menu)
-                                <li></li>
+                            @foreach($item->menuorders as $order)
+                                @if( $order->paid == 0)
+                                    <li>{{ $order->menu->name }} ({{ $order->quantity }})</li>
+                                    @endif
                             @endforeach
+                        <br />
+                                <a target="_blank" style="font-weight: bold" class="" href="{{ url('admin/menuorders', ['id' => $order->booking_id])}}?print={{encrypt($order->booking_id)}}">Print Invoice</a>
+
+
                         @endforeach
                     <div class="sl-item">
 
