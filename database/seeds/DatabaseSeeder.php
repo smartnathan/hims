@@ -27,7 +27,8 @@ class HotelAdminSeeder extends Seeder
             ['name' => 'admin', 'label' => 'Administrator'],
             ['name' => 'chef', 'label' => 'Chef'],
             ['name' => 'receptionist', 'label' => 'Receptionist'],
-            ['name' => 'manager', 'label' => 'Manager']
+            ['name' => 'manager', 'label' => 'Manager'],
+            ['name' => 'guest', 'label' => 'Guest']
         ];
 
         DB::table('roles')->insert($roles);
@@ -37,12 +38,50 @@ class HotelAdminSeeder extends Seeder
                 'firstname' => 'David',
                 'surname' => 'Philip',
                 'othername' => 'Solomon',
-                'email' => 'admin@admin.com',
+                'email' => 'admin@hotel.com',
                 'password' => bcrypt('admin'),
                 'username' => 'admin',
                 'mobile_number' => '080252625125'
             ]);
             $admin->assignRole('admin');
+
+        $receptionist = User::create([
+
+            'firstname' => 'Victoria',
+            'surname' => 'Solomon',
+            'othername' => 'David',
+            'email' => 'receptionist@hotel.com',
+            'password' => bcrypt('receptionist'),
+            'username' => 'receptionist',
+            'mobile_number' => '0803252526235'
+        ]);
+        $receptionist->assignRole('receptionist');
+
+
+        $chef = User::create([
+
+            'firstname' => 'Ruth',
+            'surname' => 'John',
+            'othername' => 'Frank',
+            'email' => 'chef@hotel.com',
+            'password' => bcrypt('chef'),
+            'username' => 'chef',
+            'mobile_number' => '080856952623'
+        ]);
+        $chef->assignRole('chef');
+
+
+        $manager = User::create([
+
+            'firstname' => 'Henry',
+            'surname' => 'Emmanuel',
+            'othername' => 'Solomon',
+            'email' => 'manager@hotel.com',
+            'password' => bcrypt('manager'),
+            'username' => 'manager',
+            'mobile_number' => '08052623682'
+        ]);
+        $manager->assignRole('manager');
 
             //Seeding states in Nigeria
         DB::insert("INSERT INTO `states` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`, `capital`, `user_id`) VALUES
@@ -87,68 +126,183 @@ class HotelAdminSeeder extends Seeder
 
             //Seeding  Settings
         DB::insert("INSERT INTO `settings` (`id`, `label`, `description`, `name`, `format`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'Room Transfer Changes', 'An additional charges for transferring from one room to another.', 'ROOM_TRANSFER_CHARGES', 'int', '2000', '2018-10-08 23:00:00', '2018-10-08 23:00:00');");
+(1, 'Room Transfer Changes', 'An additional charges for transferring from one room to another.', 'ROOM_TRANSFER_CHARGES', 'int', '2000', '2018-10-08 22:00:00', '2018-10-08 22:00:00'),
+(2, 'Hotel Address', 'Hotel Address', 'HOTEL_ADDRESS', 'string', '9 Lagos street by Calabar, Umuahia North, Abia Sate.', NULL, NULL)");
 
             //Seeding rooms types
         DB::insert("INSERT INTO `roomtypes` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`, `description`, `added_by`) VALUES
-(1, '2018-08-16 10:55:48', '2018-08-20 14:52:49', NULL, 'Standard', 'Standard', 3),
-(2, '2018-08-20 14:51:38', '2018-08-20 14:51:38', NULL, 'Royale', 'Royale', 3),
-(3, '2018-08-20 14:51:59', '2018-08-20 14:51:59', NULL, 'Delux', 'Delux', 3),
-(4, '2018-08-20 14:52:15', '2018-08-20 14:52:15', NULL, 'Basic', 'Basic', 3),
+(1, '2018-08-16 10:55:48', '2018-08-20 14:52:49', NULL, 'Standard', 'Standard', 1),
+(2, '2018-08-20 14:51:38', '2018-08-20 14:51:38', NULL, 'Royale', 'Royale', 1),
+(3, '2018-08-20 14:51:59', '2018-08-20 14:51:59', NULL, 'Delux', 'Delux', 1),
+(4, '2018-08-20 14:52:15', '2018-08-20 14:52:15', NULL, 'Basic', 'Basic', 1),
 (5, '2018-08-20 15:41:44', '2018-08-20 15:41:44', NULL, 'Executive', 'About executive', 3);");
 
             //Seeding Rooms
         DB::insert("INSERT INTO `rooms` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`, `roomtype_id`, `description`, `room_number`, `price`, `is_booked`, `added_by`, `date_booked`, `image`, `thumbnail`) VALUES
-(2, '2018-08-16 17:11:43', '2018-10-15 06:46:01', NULL, 'Accra', 1, 'About room 1', '001', '5000.00', 0, 1, NULL, NULL, NULL),
-(3, '2018-08-16 17:12:17', '2018-11-01 12:44:13', NULL, 'Lagos', 4, 'About room 2', '002', '7000.00', 0, 1, NULL, NULL, NULL),
-(4, '2018-08-16 17:12:45', '2018-10-31 22:28:26', NULL, 'Cairo', 1, 'About room 3', '003', '10000.00', 1, 1, NULL, NULL, NULL),
-(5, '2018-08-16 17:13:11', '2018-10-28 19:58:38', NULL, 'Nairobi', 3, 'About room 4', '004', '4000.00', 0, 1, NULL, NULL, NULL),
-(6, '2018-08-16 17:13:40', '2018-11-01 14:22:34', NULL, 'Lville', 1, 'About room 5', '005', '12000.00', 0, 1, NULL, NULL, NULL),
-(7, '2018-08-16 17:14:18', '2018-11-01 14:45:25', NULL, 'Kigali', 1, 'About room 6', '006', '15000.00', 0, 1, NULL, NULL, NULL),
-(8, '2018-08-16 17:14:53', '2018-11-01 14:40:44', NULL, 'Dakar', 2, 'About room 7', '007', '13000.00', 0, 1, NULL, NULL, NULL),
-(9, '2018-08-16 17:24:36', '2018-11-01 14:41:00', NULL, 'Cape Town', 1, 'About room 8', '008', '15000.00', 0, 1, NULL, NULL, NULL),
-(10, '2018-08-20 15:23:52', '2018-08-20 15:23:52', NULL, 'Jburg', 3, 'About Jburg', NULL, '20000.00', NULL, 3, NULL, NULL, NULL),
-(11, '2018-08-24 13:14:58', '2018-08-24 13:14:58', NULL, 'London', 3, 'dfksdjhfkjsdhkjfhkj', '898', '30000.00', NULL, 3, NULL, NULL, NULL),
-(17, '2018-10-27 22:45:13', '2018-10-27 23:46:29', '2018-10-27 23:46:29', 'Testing room', 3, 'ewrkl rewlrwelr elwrwelk', '4545', '6500.00', NULL, 3, NULL, NULL, NULL);
-");
+(2, '2018-08-16 16:11:43', '2018-10-15 05:46:01', NULL, 'Accra', 1, 'About room 1', '001', '5000.00', 0, 1, NULL, NULL, NULL),
+(3, '2018-08-16 16:12:17', '2018-11-01 11:44:13', NULL, 'Lagos', 4, 'About room 2', '002', '7000.00', 0, 1, NULL, NULL, NULL),
+(4, '2018-08-16 16:12:45', '2018-10-31 21:28:26', NULL, 'Cairo', 1, 'About room 3', '003', '10000.00', 0, 1, NULL, NULL, NULL),
+(5, '2018-08-16 16:13:11', '2018-10-28 18:58:38', NULL, 'Nairobi', 3, 'About room 4', '004', '4000.00', 0, 1, NULL, NULL, NULL),
+(6, '2018-08-16 16:13:40', '2018-11-01 13:22:34', NULL, 'Lville', 1, 'About room 5', '005', '12000.00', 0, 1, NULL, NULL, NULL),
+(7, '2018-08-16 16:14:18', '2018-11-01 13:45:25', NULL, 'Kigali', 1, 'About room 6', '006', '15000.00', 0, 1, NULL, NULL, NULL),
+(8, '2018-08-16 16:14:53', '2018-11-01 13:40:44', NULL, 'Dakar', 2, 'About room 7', '007', '13000.00', 0, 1, NULL, NULL, NULL),
+(9, '2018-08-16 16:24:36', '2018-11-01 13:41:00', NULL, 'Cape Town', 1, 'About room 8', '008', '15000.00', 0, 1, NULL, NULL, NULL),
+(10, '2018-08-20 14:23:52', '2018-08-20 14:23:52', NULL, 'Jburg', 3, 'About Jburg', NULL, '20000.00', NULL, 1, NULL, NULL, NULL)");
 
             //Seeding Permission
             DB::insert("INSERT INTO `permissions` (`id`, `name`, `label`, `created_at`, `updated_at`) VALUES
-(2, 'create-user', 'Create User', '2018-09-04 04:07:22', '2018-09-10 07:46:42'),
-(3, 'delete-user', 'Delete User', '2018-09-04 04:07:51', '2018-09-10 07:46:51'),
-(4, 'update-user', 'Update user', '2018-09-04 04:08:23', '2018-09-10 07:46:59'),
-(5, 'view-user', 'View User', '2018-09-04 04:08:58', '2018-09-10 07:47:08'),
-(6, 'create-menuorder', 'Create a Menu Order', '2018-09-07 15:10:09', '2018-09-10 08:16:52'),
-(7, 'delete-menuoder', 'Delete a Menu Order', '2018-09-07 15:10:40', '2018-09-10 08:17:12'),
-(8, 'update-menuorder', 'Update a menu Order', '2018-09-07 15:10:56', '2018-09-10 08:17:33'),
-(9, 'view-menuorder', 'View a menu order', '2018-09-07 15:11:15', '2018-09-10 09:02:50'),
-(10, 'view-all-user', 'View all Users', '2018-09-07 15:37:27', '2018-09-10 07:48:18'),
-(11, 'view-all-menuorder', 'View all menu order', '2018-09-10 09:04:29', '2018-09-10 09:04:29'),
-(12, 'create-booking', 'Create Booking', '2018-09-19 12:32:21', '2018-09-19 12:32:21'),
-(13, 'delete-booking', 'Delete Booking', '2018-09-19 12:32:44', '2018-09-19 12:32:44'),
-(14, 'update-booking', 'Update Booking', '2018-09-19 12:33:01', '2018-09-19 12:33:01'),
-(15, 'view-booking', 'View Booking', '2018-09-19 12:33:26', '2018-09-19 12:33:26'),
-(16, 'view-all-booking', 'View all Booking', '2018-09-19 12:34:49', '2018-09-19 12:34:49'),
-(17, 'update-userorder', 'Update User Menu Order', '2018-09-20 07:42:34', '2018-09-20 07:42:34'),
-(18, 'view-all-menutype', 'View all Food & Drink Category', '2018-10-27 13:12:34', '2018-10-27 13:12:34'),
-(19, 'view-menutype', 'View Food & Drink Category', '2018-10-27 13:13:15', '2018-10-27 13:13:15'),
-(20, 'update-menutype', 'Update Food & Drink Category', '2018-10-27 13:13:48', '2018-10-27 13:13:48'),
-(21, 'delete-menutype', 'Delete Food & Drink Category', '2018-10-27 13:14:13', '2018-10-27 13:14:13'),
-(22, 'create-menutype', 'Create Food & Drink Category', '2018-10-27 13:16:26', '2018-10-27 13:16:26'),
-(23, 'view-all-menu', 'View all Food and Drink Items', '2018-10-27 13:22:16', '2018-10-27 13:25:51'),
-(24, 'view-menu', 'View food and Drink Item', '2018-10-27 13:22:39', '2018-10-27 13:25:34'),
-(25, 'create-menu', 'Create Food and Drink Item', '2018-10-27 13:23:10', '2018-10-27 13:25:22'),
-(26, 'update-menu', 'Update Food and Drink Item', '2018-10-27 13:24:36', '2018-10-27 13:25:13'),
-(27, 'delete-menu', 'Delete Food and Drink Item', '2018-10-27 13:24:58', '2018-10-27 13:24:58');
-");
+(2, 'create-user', 'Create User', '2018-09-04 03:07:22', '2018-09-10 06:46:42'),
+(3, 'delete-user', 'Delete User', '2018-09-04 03:07:51', '2018-09-10 06:46:51'),
+(4, 'update-user', 'Update user', '2018-09-04 03:08:23', '2018-09-10 06:46:59'),
+(5, 'view-user', 'View User', '2018-09-04 03:08:58', '2018-09-10 06:47:08'),
+(6, 'create-menuorder', 'Create a Menu Order', '2018-09-07 14:10:09', '2018-09-10 07:16:52'),
+(7, 'delete-menuoder', 'Delete a Menu Order', '2018-09-07 14:10:40', '2018-09-10 07:17:12'),
+(8, 'update-menuorder', 'Update a menu Order', '2018-09-07 14:10:56', '2018-09-10 07:17:33'),
+(9, 'view-menuorder', 'View a menu order', '2018-09-07 14:11:15', '2018-09-10 08:02:50'),
+(10, 'view-all-user', 'View all Users', '2018-09-07 14:37:27', '2018-09-10 06:48:18'),
+(11, 'view-all-menuorder', 'View all menu order', '2018-09-10 08:04:29', '2018-09-10 08:04:29'),
+(12, 'create-booking', 'Create Booking', '2018-09-19 11:32:21', '2018-09-19 11:32:21'),
+(13, 'delete-booking', 'Delete Booking', '2018-09-19 11:32:44', '2018-09-19 11:32:44'),
+(14, 'update-booking', 'Update Booking', '2018-09-19 11:33:01', '2018-09-19 11:33:01'),
+(15, 'view-booking', 'View Booking', '2018-09-19 11:33:26', '2018-09-19 11:33:26'),
+(16, 'view-all-booking', 'View all Booking', '2018-09-19 11:34:49', '2018-09-19 11:34:49'),
+(17, 'update-userorder', 'Update User Menu Order', '2018-09-20 06:42:34', '2018-09-20 06:42:34'),
+(18, 'view-all-menutype', 'View all Food & Drink Category', '2018-10-27 12:12:34', '2018-10-27 12:12:34'),
+(19, 'view-menutype', 'View Food & Drink Category', '2018-10-27 12:13:15', '2018-10-27 12:13:15'),
+(20, 'update-menutype', 'Update Food & Drink Category', '2018-10-27 12:13:48', '2018-10-27 12:13:48'),
+(21, 'delete-menutype', 'Delete Food & Drink Category', '2018-10-27 12:14:13', '2018-10-27 12:14:13'),
+(22, 'create-menutype', 'Create Food & Drink Category', '2018-10-27 12:16:26', '2018-10-27 12:16:26'),
+(23, 'view-all-menu', 'View all Food and Drink Items', '2018-10-27 12:22:16', '2018-10-27 12:25:51'),
+(24, 'view-menu', 'View food and Drink Item', '2018-10-27 12:22:39', '2018-10-27 12:25:34'),
+(25, 'create-menu', 'Create Food and Drink Item', '2018-10-27 12:23:10', '2018-10-27 12:25:22'),
+(26, 'update-menu', 'Update Food and Drink Item', '2018-10-27 12:24:36', '2018-10-27 12:25:13'),
+(27, 'delete-menu', 'Delete Food and Drink Item', '2018-10-27 12:24:58', '2018-10-27 12:24:58'),
+(28, 'view-permission', 'View Permission', '2019-01-29 07:23:52', '2019-01-29 07:23:52'),
+(29, 'create-permission', 'Create Permission', '2019-01-29 07:24:02', '2019-01-29 07:24:02'),
+(30, 'delete-permission', 'Delete Permission', '2019-01-29 07:24:15', '2019-01-29 07:24:15'),
+(31, 'update-permission', 'Update Permission', '2019-01-29 07:24:28', '2019-01-29 07:24:28'),
+(32, 'view-role', 'View Role', '2019-01-29 07:25:18', '2019-01-29 07:25:18'),
+(33, 'create-role', 'Create Role', '2019-01-29 07:25:37', '2019-01-29 07:25:37'),
+(34, 'delete-role', 'Delete Role', '2019-01-29 07:25:54', '2019-01-29 07:25:54'),
+(35, 'update-role', 'Update Role', '2019-01-29 07:26:24', '2019-01-29 07:26:24'),
+(36, 'view-booking-report', 'View Booking Report', '2019-01-29 07:32:10', '2019-01-29 07:32:10'),
+(37, 'view-food-drink-report', 'View Food and Drink Report', '2019-01-29 07:32:28', '2019-01-29 07:32:28'),
+(38, 'view-general-report', 'View General Report', '2019-01-29 07:32:52', '2019-01-29 07:32:52'),
+(39, 'view-all-room', 'View All Rooms', '2019-01-29 07:35:14', '2019-01-29 07:45:43'),
+(40, 'create-room', 'Create Room', '2019-01-29 07:35:36', '2019-01-29 07:35:36'),
+(41, 'view-room', 'View Room', '2019-01-29 07:36:18', '2019-01-29 07:36:18'),
+(42, 'update-room', 'Update Room', '2019-01-29 07:36:54', '2019-01-29 07:36:54'),
+(43, 'delete-room', 'Delete Room', '2019-01-29 07:37:25', '2019-01-29 07:37:25')");
+
+
+            //Seeding for Roles and Permission
+        DB::insert("INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 1),
+(12, 1),
+(13, 1),
+(14, 1),
+(15, 1),
+(16, 1),
+(17, 1),
+(18, 1),
+(19, 1),
+(20, 1),
+(21, 1),
+(22, 1),
+(23, 1),
+(24, 1),
+(25, 1),
+(26, 1),
+(27, 1),
+(28, 1),
+(29, 1),
+(30, 1),
+(31, 1),
+(32, 1),
+(33, 1),
+(34, 1),
+(35, 1),
+(36, 1),
+(37, 1),
+(38, 1),
+(39, 1),
+(40, 1),
+(41, 1),
+(42, 1),
+(43, 1),
+(6, 2),
+(8, 2),
+(9, 2),
+(11, 2),
+(17, 2),
+(18, 2),
+(19, 2),
+(20, 2),
+(22, 2),
+(23, 2),
+(24, 2),
+(25, 2),
+(26, 2),
+(2, 3),
+(4, 3),
+(5, 3),
+(10, 3),
+(12, 3),
+(14, 3),
+(15, 3),
+(16, 3),
+(2, 4),
+(3, 4),
+(4, 4),
+(5, 4),
+(6, 4),
+(7, 4),
+(8, 4),
+(9, 4),
+(10, 4),
+(11, 4),
+(12, 4),
+(13, 4),
+(14, 4),
+(15, 4),
+(16, 4),
+(17, 4),
+(18, 4),
+(19, 4),
+(20, 4),
+(21, 4),
+(22, 4),
+(23, 4),
+(24, 4),
+(25, 4),
+(26, 4),
+(27, 4),
+(28, 4),
+(32, 4),
+(36, 4),
+(37, 4),
+(38, 4),
+(39, 4),
+(40, 4),
+(41, 4),
+(42, 4),
+(43, 4),
+(5, 5)");
 
             //Seeding Payment Type
         DB::insert("INSERT INTO `paymenttypes` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`, `description`, `added_by`) VALUES
-(1, '2018-08-16 10:20:56', '2018-08-16 21:45:19', '2018-08-16 21:45:19', 'fsdfdsfsdfsd', 'sfsddfsdsfdsfsdf', 1),
-(2, '2018-08-16 21:45:54', '2018-08-16 21:45:54', NULL, 'Cash', 'Payment done with money', 3),
-(3, '2018-08-16 21:46:26', '2018-08-16 21:46:26', NULL, 'POS', 'Payment done with POS', 3),
-(4, '2018-08-16 21:47:04', '2018-08-16 21:47:04', NULL, 'Bank Transfer', 'Payment done by bank Transfer', 3),
-(5, '2018-10-11 10:41:44', '2018-10-11 10:41:51', '2018-10-11 10:41:51', 'No cash', 'all aj', 3);");
+(2, '2018-08-16 20:45:54', '2018-08-16 20:45:54', NULL, 'Cash', 'Payment done with money', 1),
+(3, '2018-08-16 20:46:26', '2018-08-16 20:46:26', NULL, 'POS', 'Payment done with POS', 1),
+(4, '2018-08-16 20:47:04', '2018-08-16 20:47:04', NULL, 'Bank Transfer', 'Payment done by bank Transfer', 1)");
 
             //Seeding Occupations
         DB::insert("INSERT INTO `occupations` (`id`, `created_at`, `updated_at`, `deleted_at`, `name`) VALUES
