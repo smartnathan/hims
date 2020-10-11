@@ -40,12 +40,15 @@
             </div>
 </nav> --}}
 
-
+        
     <section id="wrapper" class="login-register">
+
         <div class="login-box">
+
             <div class="white-box">
                  <div class="text-center">
-                    <img width="40%" src="{{ asset('plugins/images/login.jpg') }}" alt="Login Image">
+                    <h2>Imperial Hotel</h2>
+                    <img width="30%" src="{{ asset('plugins/images/login.jpg') }}" alt="Login Image">
                 </div>
                 <form class="form-horizontal form-material" method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf

@@ -289,7 +289,9 @@ if (isset($user)) {
         $booking['user_id'] = $request->user_id;
         $booking['checked_in_by'] = Auth::user()->id;
         $booking['paid'] = $request->paid;
-        $booking['paymenttype_id'] = $request->paymenttype;
+        if ($request->paymenttype) {
+           $booking['payment_type_id'] = $request->paymenttype;
+        }
         $booking['duration'] = $request->duration;
         $booking->save();
         $room = Room::findOrFail($request->room);
